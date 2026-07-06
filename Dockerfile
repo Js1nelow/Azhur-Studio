@@ -29,6 +29,9 @@ RUN npm install --omit=dev
 # Копируем собранное приложение из первого этапа
 COPY --from=builder /app/dist ./dist
 
+# Устанавливаем production окружение
+ENV NODE_ENV=production
+
 # Указываем порт (в server.ts жестко задан 3000)
 EXPOSE 3000
 
