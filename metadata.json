@@ -1,0 +1,6 @@
+{
+  "name": "Azhur Studio",
+  "description": "Элитные натяжные потолки и архитектурное освещение",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

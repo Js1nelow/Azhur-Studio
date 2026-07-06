@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://azhur-studio.ru/sitemap.xml
