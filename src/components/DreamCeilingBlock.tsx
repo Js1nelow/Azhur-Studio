@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowUpRight, Plus, Minus } from 'lucide-react';
+import { LazyVideo } from './LazyVideo';
 
 interface DreamCeilingBlockProps {
   onOpenCalculator: (service?: string) => void;
@@ -71,9 +72,8 @@ export function DreamCeilingBlock({ onOpenCalculator }: DreamCeilingBlockProps) 
             {/* Video container with 4:3 aspect ratio */}
             <div className="my-8 lg:my-10 aspect-[4/3] w-full max-w-[460px] rounded-none overflow-hidden bg-brand-card/50 border border-brand-light/5 relative group/img">
               <div className="absolute inset-0 bg-brand-black/20 md:group-hover/img:bg-brand-black/10 transition-colors duration-500 z-10 pointer-events-none" />
-              <video
+              <LazyVideo
                 src="/azhur/photo/pro.mp4"
-                autoPlay
                 muted
                 loop
                 playsInline

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowUpRight, Sparkles, X, Maximize2, Minimize2, ArrowDown, ChevronLeft, ChevronRight } from 'lucide-react';
+import { LazyVideo } from './LazyVideo';
 
 interface WorksBentoProps {
   onOpenCalculator: (service?: string) => void;
@@ -146,13 +147,11 @@ export function WorksBento({ onOpenCalculator }: WorksBentoProps) {
               {/* Actual Image or Video content */}
               <div className="absolute inset-0 w-full h-full overflow-hidden bg-brand-black/50">
                 {item.thumbnailVideo ? (
-                  <video
+                  <LazyVideo
                     src={item.thumbnailVideo}
-                    autoPlay
                     muted
                     loop
                     playsInline
-                    preload="auto"
                     className="absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] filter brightness-[0.7] group-hover:brightness-[0.8] group-hover:scale-105"
                   />
                 ) : item.thumbnailImage ? (
