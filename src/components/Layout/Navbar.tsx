@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
+import { useTransition } from '../../contexts/TransitionContext';
 
 interface NavbarProps {
   onOpenCalculator: (service?: string) => void;
@@ -11,6 +12,7 @@ export function Navbar({ onOpenCalculator }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>('hero');
   const location = useLocation();
+  const { navigateWithTransition } = useTransition();
 
   useEffect(() => {
     if (location.pathname !== '/') return;
@@ -116,12 +118,12 @@ export function Navbar({ onOpenCalculator }: NavbarProps) {
         {/* Right Side: Estimate CTAs */}
         <div className="flex items-center justify-end gap-3 lg:gap-4">
           {/* Partners Button */}
-          <Link
-            to="/partners"
+          <button
+            onClick={() => navigateWithTransition('/partners', 'ПАРТНЕРЫ')}
             className="hidden lg:block border border-brand-light/30 hover:border-brand-light text-brand-light px-5 py-2.5 font-mono text-[10px] uppercase tracking-wider transition-all cursor-pointer font-bold"
           >
             Партнёрам
-          </Link>
+          </button>
 
           {/* Calculate Button (Only visible on lg+) */}
           <button
@@ -177,13 +179,15 @@ export function Navbar({ onOpenCalculator }: NavbarProps) {
 
             <div className="flex flex-col items-center gap-6 w-full max-w-sm mx-auto shrink-0 mt-8">
               <div className="flex w-full gap-3">
-                <Link
-                  to="/partners"
-                  onClick={() => setIsOpen(false)}
+                <button
+                  onClick={() => {
+                    setIsOpen(false);
+                    navigateWithTransition('/partners', 'ПАРТНЕРЫ');
+                  }}
                   className="flex-1 border border-brand-light/30 hover:border-brand-light text-brand-light flex items-center justify-center font-mono text-[10px] uppercase tracking-widest py-3 transition-all cursor-pointer text-center"
                 >
                   Партнёрам
-                </Link>
+                </button>
                 <button
                   onClick={() => {
                     setIsOpen(false);

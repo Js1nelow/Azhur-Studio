@@ -1,11 +1,15 @@
 import { motion } from 'motion/react';
 import { Shield, FileSpreadsheet, Smile, ChevronRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { useTransition } from '../contexts/TransitionContext';
 
 interface HeroBlockProps {
   onOpenCalculator: (service?: string) => void;
 }
 
 export function HeroBlock({ onOpenCalculator }: HeroBlockProps) {
+  const { navigateWithTransition } = useTransition();
+
   // 3 cards required in the prompt:
   const cards = [
     {
@@ -85,7 +89,7 @@ export function HeroBlock({ onOpenCalculator }: HeroBlockProps) {
                     Олег
                   </div>
                   <div className="text-[8px] text-brand-gray mt-0.5 uppercase">
-                    12 лет опыта • Контроль монтажа и смет
+                    17 лет опыта • Контроль монтажа и смет
                   </div>
                 </div>
 
@@ -122,7 +126,7 @@ export function HeroBlock({ onOpenCalculator }: HeroBlockProps) {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.7 }}
-              className="flex flex-col sm:flex-row gap-4 items-start sm:items-center"
+              className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto items-stretch sm:items-center"
             >
               <button
                 onClick={() => onOpenCalculator('Натяжные потолки')}
@@ -131,6 +135,13 @@ export function HeroBlock({ onOpenCalculator }: HeroBlockProps) {
               >
                 Рассчитать проект онлайн
                 <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              </button>
+              
+              <button
+                onClick={() => navigateWithTransition('/partners', 'ПАРТНЕРЫ')}
+                className="w-full sm:w-auto border border-brand-red hover:bg-brand-red/10 text-brand-light font-mono text-xs uppercase tracking-widest px-8 py-5 transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                Я партнёр — дизайнер / прораб
               </button>
             </motion.div>
           </div>
@@ -160,7 +171,7 @@ export function HeroBlock({ onOpenCalculator }: HeroBlockProps) {
                   Олег
                 </div>
                 <div className="text-[9px] text-brand-gray mt-1 uppercase">
-                  12 лет опыта • Контроль монтажа и смет
+                  17 лет опыта • Контроль монтажа и смет
                 </div>
               </div>
 

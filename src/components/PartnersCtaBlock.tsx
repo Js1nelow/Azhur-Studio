@@ -1,8 +1,11 @@
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Briefcase } from 'lucide-react';
+import { useTransition } from '../contexts/TransitionContext';
 
 export function PartnersCtaBlock() {
+  const { navigateWithTransition } = useTransition();
+
   return (
     <section className="relative py-16 md:py-20 bg-brand-black border-t border-brand-light/5 overflow-hidden">
       <div className="absolute inset-0 bg-brand-red/5 mix-blend-color-dodge pointer-events-none" />
@@ -29,13 +32,13 @@ export function PartnersCtaBlock() {
             Реализуем проекты любой сложности с гарантией качества и соблюдением сроков.
           </p>
           
-          <Link
-            to="/partners"
-            className="inline-flex items-center justify-center gap-2 bg-brand-light hover:bg-white text-brand-black px-8 py-4 font-mono text-[11px] font-bold uppercase tracking-widest transition-all duration-300 group"
+          <button
+            onClick={() => navigateWithTransition('/partners', 'ПАРТНЕРЫ')}
+            className="inline-flex items-center justify-center gap-2 border border-brand-light/30 hover:border-brand-light text-brand-light px-8 py-4 font-mono text-[11px] font-bold uppercase tracking-widest transition-all duration-300 group cursor-pointer"
           >
             Узнать условия
             <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-          </Link>
+          </button>
         </motion.div>
       </div>
     </section>

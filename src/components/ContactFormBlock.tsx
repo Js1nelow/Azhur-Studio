@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Phone, Calculator, Ruler, CheckCircle, ArrowRight } from 'lucide-react';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 export function ContactFormBlock() {
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [comment, setComment] = useState('');
@@ -58,6 +60,14 @@ export function ContactFormBlock() {
     setError(null);
     
     try {
+      if (!executeRecaptcha) {
+        setError('Защита от спама еще загружается. Пожалуйста, подождите пару секунд и попробуйте снова.');
+        setIsSubmitting(false);
+        return;
+      }
+      
+      const recaptchaToken = await executeRecaptcha('contact_form');
+      
       const response = await fetch('/api/send-lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -65,7 +75,8 @@ export function ContactFormBlock() {
           name, 
           phone, 
           comment,
-          source: 'Блок контактов'
+          source: 'Блок контактов',
+          recaptchaToken
         })
       });
       

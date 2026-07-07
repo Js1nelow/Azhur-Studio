@@ -3,11 +3,36 @@ import path from 'path';
 import { createServer as createViteServer } from 'vite';
 import * as dotenv from 'dotenv';
 import rateLimit from 'express-rate-limit';
+import cors from 'cors';
+import xss from 'xss';
 
 dotenv.config();
 
 const app = express();
+app.set('trust proxy', 1); // Trust first proxy for express-rate-limit
+
 const PORT = 3000;
+
+// Ограничение CORS (разрешаем только наш домен)
+const allowedOrigins = [
+  process.env.APP_URL || 'http://localhost:3000',
+  // Разрешаем dev и preview URL AI Studio
+  'https://ais-dev-yjrkwil3mis5hnipw4e43x-458080331442.europe-west2.run.app',
+  'https://ais-pre-yjrkwil3mis5hnipw4e43x-458080331442.europe-west2.run.app'
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Разрешаем запросы без origin (например, server-to-server) 
+    // или если origin в списке разрешенных
+    if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['POST', 'GET', 'OPTIONS'],
+}));
 
 // Ограничение размера JSON payload до 10kb (защита от DoS)
 app.use(express.json({ limit: '10kb' }));
@@ -27,28 +52,68 @@ interface LeadRequest {
   comment?: string;
   source?: string;
   details?: string;
+  recaptchaToken?: string;
 }
 
 // API route to send lead to Max Bot
 app.post('/api/send-lead', apiLimiter, async (req: express.Request<{}, {}, LeadRequest>, res: express.Response) => {
   try {
-    const { name, phone, comment, source, details } = req.body;
+    const { name, phone, comment, source, details, recaptchaToken } = req.body;
     
+    // Бэкенд-валидация reCAPTCHA
+    const recaptchaSecret = process.env.RECAPTCHA_SECRET_KEY || '6Le9r0gtAAAAADnZKEtvpNavBZLui4gcq6b0XMuP';
+    if (recaptchaSecret && recaptchaToken) {
+      const verifyUrl = `https://www.google.com/recaptcha/api/siteverify`;
+      const verifyResponse = await fetch(verifyUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `secret=${recaptchaSecret}&response=${recaptchaToken}`,
+      });
+      const verifyData = await verifyResponse.json();
+      console.log('reCAPTCHA verify response:', verifyData);
+      
+      if (!verifyData.success) {
+        // Если ошибка связана с окружением браузера (например, iframe песочницы или блокировщик рекламы),
+        // пропускаем заявку, чтобы не блокировать реальных пользователей.
+        if (verifyData['error-codes'] && verifyData['error-codes'].includes('browser-error')) {
+          console.warn('reCAPTCHA skipped due to browser-error (iframe/adblock).');
+        } else {
+          console.error('reCAPTCHA validation failed:', verifyData);
+          return res.status(400).json({ success: false, error: 'Проверка защиты от спама не пройдена. Пожалуйста, обновите страницу и попробуйте еще раз.' });
+        }
+      }
+      
+      if (verifyData.success && verifyData.score !== undefined && verifyData.score < 0.5) {
+        console.warn('reCAPTCHA low score:', verifyData.score);
+        // Temporarily allow low score or just return it in the error for debugging
+        return res.status(400).json({ success: false, error: 'Проверка reCAPTCHA не пройдена (низкий рейтинг: ' + verifyData.score + ')' });
+      }
+    } else if (recaptchaSecret && !recaptchaToken) {
+      return res.status(400).json({ success: false, error: 'Отсутствует токен reCAPTCHA.' });
+    }
+
+    // Санитаризация данных (защита от XSS)
+    const safeName = name ? xss(name) : undefined;
+    const safePhone = phone ? xss(phone) : '';
+    const safeComment = comment ? xss(comment) : undefined;
+    const safeSource = source ? xss(source) : undefined;
+    const safeDetails = details ? xss(details) : undefined;
+
     // Бэкенд-валидация: обязательные поля и их разумная длина
-    if (!phone || typeof phone !== 'string' || phone.replace(/\D/g, '').length < 11) {
+    if (!safePhone || typeof safePhone !== 'string' || safePhone.replace(/\D/g, '').length < 11) {
       return res.status(400).json({ success: false, error: 'Некорректный номер телефона' });
     }
 
-    if (name && name.length > 100) return res.status(400).json({ success: false, error: 'Имя слишком длинное' });
-    if (comment && comment.length > 1000) return res.status(400).json({ success: false, error: 'Комментарий слишком длинный' });
+    if (safeName && safeName.length > 100) return res.status(400).json({ success: false, error: 'Имя слишком длинное' });
+    if (safeComment && safeComment.length > 1000) return res.status(400).json({ success: false, error: 'Комментарий слишком длинный' });
 
     // Format the message
     let messageText = `🔥 Новая заявка с сайта!\n\n`;
-    if (source) messageText += `Форма: ${source}\n`;
-    if (name) messageText += `Имя: ${name}\n`;
-    messageText += `Телефон: ${phone}\n`;
-    if (details) messageText += `Детали: ${details}\n`;
-    if (comment) messageText += `Комментарий: ${comment}\n`;
+    if (safeSource) messageText += `Форма: ${safeSource}\n`;
+    if (safeName) messageText += `Имя: ${safeName}\n`;
+    messageText += `Телефон: ${safePhone}\n`;
+    if (safeDetails) messageText += `Детали: ${safeDetails}\n`;
+    if (safeComment) messageText += `Комментарий: ${safeComment}\n`;
 
     const maxBotToken = process.env.MAX_BOT_TOKEN;
     let maxChannelId = process.env.MAX_CHANNEL_ID;
