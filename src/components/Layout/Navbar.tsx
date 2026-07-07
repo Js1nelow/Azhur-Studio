@@ -82,7 +82,7 @@ export function Navbar({ onOpenCalculator }: NavbarProps) {
             onClick={(e) => handleLinkClick(e, '#hero')} 
             className="font-serif font-bold text-2xl uppercase tracking-[0.08em] text-white hover:text-brand-red transition-colors duration-300 select-none"
           >
-            AZHUR
+            АЖУР
           </Link>
         </div>
 

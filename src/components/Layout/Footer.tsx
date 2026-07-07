@@ -14,7 +14,7 @@ export function Footer() {
           {/* Column 1: Brand */}
           <div className="md:col-span-2 space-y-4">
             <span className="font-display font-medium tracking-tighter text-xl sm:text-2xl uppercase text-brand-light">
-              AZHUR<span className="text-brand-red">.</span>
+              АЖУР<span className="text-brand-red">.</span>
             </span>
             <p className="font-mono text-xs text-brand-gray uppercase tracking-wider max-w-sm">
               Профессиональное проектирование и чистый монтаж натяжных систем освещения и премиальных потолков в Москве и МО.
