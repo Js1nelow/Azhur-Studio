@@ -72,7 +72,7 @@ export function DreamCeilingBlock({ onOpenCalculator }: DreamCeilingBlockProps) 
             <div className="my-8 lg:my-10 aspect-[4/3] w-full max-w-[460px] rounded-xl overflow-hidden bg-brand-card/50 border border-brand-light/5 relative group/img">
               <div className="absolute inset-0 bg-brand-black/20 md:group-hover/img:bg-brand-black/10 transition-colors duration-500 z-10" />
               <img
-                src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&q=80&w=800"
+                src="/azhur/photo/pro.webp"
                 alt="Процесс создания потолка"
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] md:group-hover/img:scale-105 group-hover/img:scale-100"
