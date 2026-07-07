@@ -24,12 +24,12 @@ app.post('/api/send-lead', async (req: express.Request<{}, {}, LeadRequest>, res
     const { name, phone, comment, source, details } = req.body;
     
     // Format the message
-    let messageText = `🔥 **Новая заявка с сайта!**\n`;
-    if (source) messageText += `• **Форма:** ${source}\n`;
-    if (name) messageText += `• **Имя:** ${name}\n`;
-    messageText += `• **Телефон:** ${phone}\n`;
-    if (details) messageText += `• **Адрес замера / Детали:** ${details}\n`;
-    if (comment) messageText += `• **Комментарий:** ${comment}\n`;
+    let messageText = `🔥 Новая заявка с сайта!\n\n`;
+    if (source) messageText += `Форма: ${source}\n`;
+    if (name) messageText += `Имя: ${name}\n`;
+    messageText += `Телефон: ${phone}\n`;
+    if (details) messageText += `Детали: ${details}\n`;
+    if (comment) messageText += `Комментарий: ${comment}\n`;
 
     const maxBotToken = process.env.MAX_BOT_TOKEN;
     let maxChannelId = process.env.MAX_CHANNEL_ID;
