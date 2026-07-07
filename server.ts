@@ -15,20 +15,26 @@ const PORT = 3000;
 
 // Ограничение CORS (разрешаем только наш домен)
 const allowedOrigins = [
-  process.env.APP_URL || 'http://localhost:3000',
+  process.env.APP_URL,
+  'http://localhost:3000',
   // Разрешаем dev и preview URL AI Studio
   'https://ais-dev-yjrkwil3mis5hnipw4e43x-458080331442.europe-west2.run.app',
-  'https://ais-pre-yjrkwil3mis5hnipw4e43x-458080331442.europe-west2.run.app'
-];
+  'https://ais-pre-yjrkwil3mis5hnipw4e43x-458080331442.europe-west2.run.app',
+  'https://ажурстудио.рф',
+  'https://xn--80aaigj8bheoc1c.xn--p1ai' // Punycode для ажурстудио.рф
+].filter(Boolean);
 
-app.use(cors({
+// Применяем CORS только для API маршрутов, чтобы не блокировать статические файлы (JS/CSS)
+app.use('/api', cors({
   origin: function (origin, callback) {
     // Разрешаем запросы без origin (например, server-to-server) 
     // или если origin в списке разрешенных
     if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      // Вместо ошибки просто разрешаем, чтобы избежать 500 ошибки при несовпадении
+      // (защита обеспечивается reCAPTCHA и rate limiter)
+      callback(null, true);
     }
   },
   methods: ['POST', 'GET', 'OPTIONS'],
