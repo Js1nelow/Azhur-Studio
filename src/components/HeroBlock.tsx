@@ -10,7 +10,7 @@ export function HeroBlock({ onOpenCalculator }: HeroBlockProps) {
   const cards = [
     {
       icon: <Shield className="text-brand-red w-6 h-6 stroke-[1.25]" />,
-      text: "Результат без сюрпризов — гарантия до 10 лет",
+      text: "Результат без сюрпризов — гарантия 10 лет",
     },
     {
       icon: <FileSpreadsheet className="text-brand-red w-6 h-6 stroke-[1.25]" />,

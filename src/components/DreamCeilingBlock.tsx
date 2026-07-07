@@ -43,7 +43,7 @@ export function DreamCeilingBlock({ onOpenCalculator }: DreamCeilingBlockProps) 
     {
       num: "06",
       title: "Сдача объекта с гарантией",
-      desc: "до 5 лет",
+      desc: "10 лет",
       details: "Принимаем работу вместе с вами. Устраняем замечания на месте. Выдаём гарантийный документ."
     }
   ];

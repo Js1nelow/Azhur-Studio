@@ -7,6 +7,7 @@ import { ServicesBlock } from '../components/ServicesBlock';
 import { ReviewsBlock } from '../components/ReviewsBlock';
 import { DreamCeilingBlock } from '../components/DreamCeilingBlock';
 import { AboutBlock } from '../components/AboutBlock';
+import { PartnersCtaBlock } from '../components/PartnersCtaBlock';
 import { FaqBlock } from '../components/FaqBlock';
 import { ContactFormBlock } from '../components/ContactFormBlock';
 
@@ -39,6 +40,7 @@ export function Home({ onOpenCalculator }: HomeProps) {
       <DreamCeilingBlock onOpenCalculator={onOpenCalculator} />
       <ReviewsBlock />
       <AboutBlock />
+      <PartnersCtaBlock />
       <FaqBlock />
       <ContactFormBlock />
     </>

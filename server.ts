@@ -2,13 +2,24 @@ import express from 'express';
 import path from 'path';
 import { createServer as createViteServer } from 'vite';
 import * as dotenv from 'dotenv';
+import rateLimit from 'express-rate-limit';
 
 dotenv.config();
 
 const app = express();
 const PORT = 3000;
 
-app.use(express.json());
+// Ограничение размера JSON payload до 10kb (защита от DoS)
+app.use(express.json({ limit: '10kb' }));
+
+// Настройка Rate Limiting для API (защита от спама)
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 минут
+  max: 10, // Ограничение: 10 запросов с одного IP за 15 минут
+  message: { success: false, error: 'Слишком много запросов. Пожалуйста, подождите немного.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 interface LeadRequest {
   name?: string;
@@ -19,10 +30,18 @@ interface LeadRequest {
 }
 
 // API route to send lead to Max Bot
-app.post('/api/send-lead', async (req: express.Request<{}, {}, LeadRequest>, res: express.Response) => {
+app.post('/api/send-lead', apiLimiter, async (req: express.Request<{}, {}, LeadRequest>, res: express.Response) => {
   try {
     const { name, phone, comment, source, details } = req.body;
     
+    // Бэкенд-валидация: обязательные поля и их разумная длина
+    if (!phone || typeof phone !== 'string' || phone.replace(/\D/g, '').length < 11) {
+      return res.status(400).json({ success: false, error: 'Некорректный номер телефона' });
+    }
+
+    if (name && name.length > 100) return res.status(400).json({ success: false, error: 'Имя слишком длинное' });
+    if (comment && comment.length > 1000) return res.status(400).json({ success: false, error: 'Комментарий слишком длинный' });
+
     // Format the message
     let messageText = `🔥 Новая заявка с сайта!\n\n`;
     if (source) messageText += `Форма: ${source}\n`;
@@ -79,7 +98,8 @@ app.post('/api/send-lead', async (req: express.Request<{}, {}, LeadRequest>, res
     res.json({ success: true });
   } catch (error: any) {
     console.error('Error sending lead to Max Bot:', error.message);
-    res.status(500).json({ success: false, error: error.message || 'Failed to send lead' });
+    // Не отправляем внутренние ошибки на клиент
+    res.status(500).json({ success: false, error: 'Внутренняя ошибка сервера. Пожалуйста, попробуйте позже.' });
   }
 });
 

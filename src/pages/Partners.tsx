@@ -51,11 +51,11 @@ export function Partners() {
   ];
 
   return (
-    <div className="pt-24 md:pt-32 pb-24 min-h-screen bg-brand-black text-brand-light">
+    <div className="pt-32 md:pt-40 pb-24 min-h-screen bg-brand-black text-brand-light">
       <div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-16">
         <Link 
           to="/" 
-          className="inline-flex items-center gap-2 text-brand-gray hover:text-brand-light font-mono text-xs uppercase tracking-wider transition-colors mb-12"
+          className="inline-flex items-center gap-2 text-brand-gray hover:text-brand-light font-mono text-xs uppercase tracking-wider transition-colors mb-12 md:mb-16"
         >
           <ArrowLeft size={16} />
           Назад на главную

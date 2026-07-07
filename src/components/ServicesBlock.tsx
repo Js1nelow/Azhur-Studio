@@ -17,10 +17,10 @@ export function ServicesBlock({ onOpenCalculator }: ServicesBlockProps) {
       description: "Идеально ровные матовые, сатиновые или глянцевые полотна премиум-качества. Монтаж без швов и трещин за 1 день.",
       icon: Layers,
       specs: [
-        { label: "Материал", value: "MSD Premium / Teqtum" },
+        { label: "Материал", value: "MSD Premium / Bauf / Teqtum" },
         { label: "Экологичность", value: "Класс А+ (без запаха)" },
         { label: "Ширина полотна", value: "До 5.5 м без швов" },
-        { label: "Срок службы", value: "Гарантия 15 лет" }
+        { label: "Срок службы", value: "Гарантия 10 лет" }
       ],
       features: ["Монтаж без пыли за 1 день", "Идеальная белизна полотна", "Выдерживает до 100л воды/м²"]
     },
@@ -28,11 +28,11 @@ export function ServicesBlock({ onOpenCalculator }: ServicesBlockProps) {
       id: "02",
       title: "Теневой профиль",
       subtitle: "Архитектурный зазор EuroKRAAB",
-      description: "Современное примыкание EuroKRAAB. Создает визуальный зазор 6 мм, избавляя от резиновых уголков-заглушек.",
+      description: "Современное примыкание EuroKRAAB. Создает визуальный зазор 7 мм, избавляя от резиновых уголков-заглушек.",
       icon: Sliders,
       specs: [
         { label: "Технология", value: "Бесщелевой теневой зазор" },
-        { label: "Ширина шва", value: "6 мм (идеальная геометрия)" },
+        { label: "Ширина шва", value: "7 мм (идеальная геометрия)" },
         { label: "Материал", value: "Анодированный алюминий" },
         { label: "Цвет профиля", value: "Черный муар / Матовый" }
       ],

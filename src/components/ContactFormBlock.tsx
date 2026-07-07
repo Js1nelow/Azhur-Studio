@@ -100,7 +100,7 @@ export function ContactFormBlock() {
     },
     {
       icon: <Ruler size={18} strokeWidth={1.5} className="text-brand-red shrink-0" />,
-      text: "Бесплатный выезд на замер"
+      text: "Выезд специалиста на объект"
     }
   ];
 
