@@ -68,13 +68,15 @@ export function DreamCeilingBlock({ onOpenCalculator }: DreamCeilingBlockProps) 
               </h2>
             </div>
             
-            {/* Dark placeholder image with 4:3 aspect ratio */}
+            {/* Video container with 4:3 aspect ratio */}
             <div className="my-8 lg:my-10 aspect-[4/3] w-full max-w-[460px] rounded-none overflow-hidden bg-brand-card/50 border border-brand-light/5 relative group/img">
-              <div className="absolute inset-0 bg-brand-black/20 md:group-hover/img:bg-brand-black/10 transition-colors duration-500 z-10" />
-              <img
-                src="/azhur/photo/pro.webp"
-                alt="Процесс создания потолка"
-                referrerPolicy="no-referrer"
+              <div className="absolute inset-0 bg-brand-black/20 md:group-hover/img:bg-brand-black/10 transition-colors duration-500 z-10 pointer-events-none" />
+              <video
+                src="/azhur/photo/pro.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
                 className="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] md:group-hover/img:scale-105 group-hover/img:scale-100"
               />
             </div>
