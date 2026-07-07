@@ -10,6 +10,46 @@ export function ContactFormBlock() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const isPhoneValid = phone.replace(/\D/g, '').length >= 11;
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e.target.value;
+    
+    if (!input) {
+      setPhone('');
+      return;
+    }
+
+    let numbers = input.replace(/\D/g, '');
+    
+    if (!numbers) {
+      if (phone && input.length < phone.length) {
+        setPhone('');
+      } else {
+        setPhone('+7');
+      }
+      return;
+    }
+
+    if (['7', '8', '9'].includes(numbers[0])) {
+      if (numbers[0] === '9') {
+        numbers = '7' + numbers;
+      } else if (numbers[0] === '8') {
+        numbers = '7' + numbers.substring(1);
+      }
+
+      let formatted = '+7';
+      if (numbers.length > 1) formatted += ' (' + numbers.substring(1, 4);
+      if (numbers.length >= 5) formatted += ') ' + numbers.substring(4, 7);
+      if (numbers.length >= 8) formatted += '-' + numbers.substring(7, 9);
+      if (numbers.length >= 10) formatted += '-' + numbers.substring(9, 11);
+      
+      setPhone(formatted);
+    } else {
+      setPhone('+' + numbers.substring(0, 15));
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!phone) return;
@@ -140,7 +180,7 @@ export function ContactFormBlock() {
                         type="tel"
                         required
                         value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
+                        onChange={handlePhoneChange}
                         placeholder="+7 (999) 000-00-00"
                         className="w-full bg-brand-black border border-brand-light/10 focus:border-brand-red/50 px-4 py-4 text-sm text-brand-light rounded-none outline-none transition-colors font-sans placeholder:text-brand-gray/50"
                       />
@@ -161,8 +201,12 @@ export function ContactFormBlock() {
                     {/* Submit Button */}
                     <button
                       type="submit"
-                      disabled={isSubmitting || !phone}
-                      className="w-full bg-brand-red hover:bg-brand-red/90 text-white font-mono text-xs uppercase tracking-widest py-5 transition-all font-medium flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-lg shadow-brand-red/5 hover:shadow-brand-red/15"
+                      disabled={isSubmitting || !isPhoneValid}
+                      className={`w-full font-mono text-xs uppercase tracking-widest py-5 transition-all font-medium flex items-center justify-center gap-2 cursor-pointer ${
+                        isPhoneValid
+                          ? 'bg-brand-red hover:bg-brand-red/90 text-white shadow-[0_0_20px_rgba(255,51,51,0.3)]'
+                          : 'bg-brand-black border border-brand-light/10 text-brand-gray cursor-not-allowed'
+                      }`}
                     >
                       {isSubmitting ? (
                         <>
