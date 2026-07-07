@@ -11,7 +11,8 @@ interface BentoItem {
   title: string;
   location: string;
   used: string;
-  thumbnailVideo: string;
+  thumbnailVideo?: string;
+  thumbnailImage?: string;
   galleryImages: string[];
   gridClass: string;
   serviceName: string;
@@ -143,15 +144,25 @@ export function WorksBento({ onOpenCalculator }: WorksBentoProps) {
               <div className="absolute inset-0 bg-brand-red/10 opacity-0 group-hover:opacity-100 transition-all duration-700 z-10 mix-blend-color-dodge" />
 
               {/* Actual Image or Video content */}
-              <div className="absolute inset-0 w-full h-full overflow-hidden">
-                <video
-                  src={item.thumbnailVideo}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] filter brightness-[0.7] group-hover:brightness-[0.8] group-hover:scale-105"
-                />
+              <div className="absolute inset-0 w-full h-full overflow-hidden bg-brand-black/50">
+                {item.thumbnailVideo ? (
+                  <video
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="auto"
+                    className="absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] filter brightness-[0.7] group-hover:brightness-[0.8] group-hover:scale-105"
+                  >
+                    <source src={item.thumbnailVideo} type="video/mp4" />
+                  </video>
+                ) : item.thumbnailImage ? (
+                  <img
+                    src={item.thumbnailImage}
+                    alt={item.title}
+                    className="absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] filter brightness-[0.7] group-hover:brightness-[0.8] group-hover:scale-105"
+                  />
+                ) : null}
               </div>
 
               {/* Top Accent Lines */}
@@ -262,7 +273,28 @@ export function WorksBento({ onOpenCalculator }: WorksBentoProps) {
 
                 {/* Premium lightbox media */}
                 {(() => {
-                  const images = activeItem.galleryImages.length > 0 ? activeItem.galleryImages : ["https://placehold.co/800x600/1a1a1a/4a4a4a?text=Фото+в+процессе+обработки"];
+                  const hasImages = activeItem.galleryImages.length > 0;
+
+                  if (!hasImages && activeItem.thumbnailVideo) {
+                    return (
+                      <video
+                        controls
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        className={`object-contain transition-all duration-300 w-full h-full z-10 ${
+                          isMaximized 
+                            ? 'max-h-[85vh] max-w-[90vw]' 
+                            : 'max-h-full max-w-full'
+                        }`}
+                      >
+                        <source src={activeItem.thumbnailVideo} type="video/mp4" />
+                      </video>
+                    );
+                  }
+
+                  const images = hasImages ? activeItem.galleryImages : ["https://placehold.co/800x600/1a1a1a/4a4a4a?text=Фото+в+процессе+обработки"];
                   const currentImage = images[currentGalleryIndex];
                   
                   return (
