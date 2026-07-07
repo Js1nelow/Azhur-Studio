@@ -68,8 +68,8 @@ export function DreamCeilingBlock({ onOpenCalculator }: DreamCeilingBlockProps) 
               </h2>
             </div>
             
-            {/* Dark placeholder image with 4:3 aspect ratio and 12px rounded corners */}
-            <div className="my-8 lg:my-10 aspect-[4/3] w-full max-w-[460px] rounded-xl overflow-hidden bg-brand-card/50 border border-brand-light/5 relative group/img">
+            {/* Dark placeholder image with 4:3 aspect ratio */}
+            <div className="my-8 lg:my-10 aspect-[4/3] w-full max-w-[460px] rounded-none overflow-hidden bg-brand-card/50 border border-brand-light/5 relative group/img">
               <div className="absolute inset-0 bg-brand-black/20 md:group-hover/img:bg-brand-black/10 transition-colors duration-500 z-10" />
               <img
                 src="/azhur/photo/pro.webp"
