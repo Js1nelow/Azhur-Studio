@@ -272,62 +272,64 @@ export function WorksBento({ onOpenCalculator }: WorksBentoProps) {
 
                 {/* Premium lightbox media */}
                 {(() => {
-                  const hasImages = activeItem.galleryImages.length > 0;
-
-                  if (!hasImages && activeItem.thumbnailVideo) {
-                    return (
-                      <video
-                        src={activeItem.thumbnailVideo}
-                        controls
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        className={`object-contain transition-all duration-300 w-full h-full z-10 ${
-                          isMaximized 
-                            ? 'max-h-[85vh] max-w-[90vw]' 
-                            : 'max-h-full max-w-full'
-                        }`}
-                      />
-                    );
+                  const media: { type: 'video' | 'image', url: string }[] = [];                  
+                  
+                  if (activeItem.thumbnailVideo) {
+                    media.push({ type: 'video', url: activeItem.thumbnailVideo });
                   }
                   
-                  if (!hasImages && activeItem.thumbnailImage) {
-                    return (
-                      <img
-                        src={activeItem.thumbnailImage}
-                        alt={activeItem.title}
-                        className={`object-contain transition-all duration-300 w-full h-full z-10 ${
-                          isMaximized 
-                            ? 'max-h-[85vh] max-w-[90vw]' 
-                            : 'max-h-full max-w-full'
-                        }`}
-                      />
-                    );
+                  if (activeItem.galleryImages && activeItem.galleryImages.length > 0) {
+                    activeItem.galleryImages.forEach(img => {
+                      media.push({ type: 'image', url: img });
+                    });
+                  } else if (!activeItem.thumbnailVideo && activeItem.thumbnailImage) {
+                    media.push({ type: 'image', url: activeItem.thumbnailImage });
                   }
 
-                  const images = hasImages ? activeItem.galleryImages : ["https://placehold.co/800x600/1a1a1a/4a4a4a?text=Фото+в+процессе+обработки"];
-                  const currentImage = images[currentGalleryIndex];
+                  if (media.length === 0) {
+                    media.push({ type: 'image', url: "https://placehold.co/800x600/1a1a1a/4a4a4a?text=Фото+в+процессе+обработки" });
+                  }
+
+                  // Fallback in case index goes out of bounds when switching items
+                  const safeIndex = currentGalleryIndex >= media.length ? 0 : currentGalleryIndex;
+                  const currentMedia = media[safeIndex];
                   
                   return (
                     <>
-                      <img
-                        key={currentGalleryIndex}
-                        src={currentImage}
-                        alt={`${activeItem.title} - фото ${currentGalleryIndex + 1}`}
-                        className={`object-contain transition-all duration-300 w-full h-full z-10 ${
-                          isMaximized 
-                            ? 'max-h-[85vh] max-w-[90vw]' 
-                            : 'max-h-full max-w-full'
-                        }`}
-                      />
+                      {currentMedia.type === 'video' ? (
+                        <video
+                          key={`vid-${safeIndex}`}
+                          src={currentMedia.url}
+                          controls
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                          className={`object-contain transition-all duration-300 w-full h-full z-10 ${
+                            isMaximized 
+                              ? 'max-h-[85vh] max-w-[90vw]' 
+                              : 'max-h-full max-w-full'
+                          }`}
+                        />
+                      ) : (
+                        <img
+                          key={`img-${safeIndex}`}
+                          src={currentMedia.url}
+                          alt={`${activeItem.title} - медиа ${safeIndex + 1}`}
+                          className={`object-contain transition-all duration-300 w-full h-full z-10 ${
+                            isMaximized 
+                              ? 'max-h-[85vh] max-w-[90vw]' 
+                              : 'max-h-full max-w-full'
+                          }`}
+                        />
+                      )}
                       
-                      {images.length > 1 && (
+                      {media.length > 1 && (
                         <>
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
-                              setCurrentGalleryIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1));
+                              setCurrentGalleryIndex((prev) => (prev > 0 ? prev - 1 : media.length - 1));
                             }}
                             className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-2 text-brand-light bg-brand-black/50 hover:bg-brand-red transition-colors rounded-full backdrop-blur-sm"
                           >
@@ -336,7 +338,7 @@ export function WorksBento({ onOpenCalculator }: WorksBentoProps) {
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
-                              setCurrentGalleryIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0));
+                              setCurrentGalleryIndex((prev) => (prev < media.length - 1 ? prev + 1 : 0));
                             }}
                             className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-2 text-brand-light bg-brand-black/50 hover:bg-brand-red transition-colors rounded-full backdrop-blur-sm"
                           >
@@ -344,15 +346,15 @@ export function WorksBento({ onOpenCalculator }: WorksBentoProps) {
                           </button>
                           
                           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2 p-2 bg-brand-black/30 backdrop-blur-sm rounded-full">
-                            {images.map((_, idx) => (
+                            {media.map((_, idx) => (
                               <button
                                 key={idx}
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   setCurrentGalleryIndex(idx);
                                 }}
-                                className={`w-2 h-2 rounded-full transition-all ${idx === currentGalleryIndex ? 'bg-brand-red scale-125' : 'bg-brand-light/50 hover:bg-brand-light'}`}
-                                aria-label={`Фото ${idx + 1}`}
+                                className={`w-2 h-2 rounded-full transition-all ${idx === safeIndex ? 'bg-brand-red scale-125' : 'bg-brand-light/50 hover:bg-brand-light'}`}
+                                aria-label={`Медиа ${idx + 1}`}
                               />
                             ))}
                           </div>
