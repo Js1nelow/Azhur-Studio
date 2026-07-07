@@ -147,15 +147,14 @@ export function WorksBento({ onOpenCalculator }: WorksBentoProps) {
               <div className="absolute inset-0 w-full h-full overflow-hidden bg-brand-black/50">
                 {item.thumbnailVideo ? (
                   <video
+                    src={item.thumbnailVideo}
                     autoPlay
                     muted
                     loop
                     playsInline
                     preload="auto"
                     className="absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] filter brightness-[0.7] group-hover:brightness-[0.8] group-hover:scale-105"
-                  >
-                    <source src={item.thumbnailVideo} type="video/mp4" />
-                  </video>
+                  />
                 ) : item.thumbnailImage ? (
                   <img
                     src={item.thumbnailImage}
@@ -278,6 +277,7 @@ export function WorksBento({ onOpenCalculator }: WorksBentoProps) {
                   if (!hasImages && activeItem.thumbnailVideo) {
                     return (
                       <video
+                        src={activeItem.thumbnailVideo}
                         controls
                         autoPlay
                         muted
@@ -288,9 +288,21 @@ export function WorksBento({ onOpenCalculator }: WorksBentoProps) {
                             ? 'max-h-[85vh] max-w-[90vw]' 
                             : 'max-h-full max-w-full'
                         }`}
-                      >
-                        <source src={activeItem.thumbnailVideo} type="video/mp4" />
-                      </video>
+                      />
+                    );
+                  }
+                  
+                  if (!hasImages && activeItem.thumbnailImage) {
+                    return (
+                      <img
+                        src={activeItem.thumbnailImage}
+                        alt={activeItem.title}
+                        className={`object-contain transition-all duration-300 w-full h-full z-10 ${
+                          isMaximized 
+                            ? 'max-h-[85vh] max-w-[90vw]' 
+                            : 'max-h-full max-w-full'
+                        }`}
+                      />
                     );
                   }
 
