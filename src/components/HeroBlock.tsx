@@ -74,7 +74,7 @@ export function HeroBlock({ onOpenCalculator }: HeroBlockProps) {
                 <div className="absolute inset-1.5 border border-brand-light/5 z-20 pointer-events-none" />
                 
                 <img
-                  src="/azhur/photo/hero.jpg"
+                  src="/azhur/photo/hero.webp"
                   alt="Главный инженер Олег"
                   className="absolute inset-0 w-full h-full object-cover transition-all duration-1000 filter brightness-95 group-hover:brightness-100"
                 />
@@ -149,7 +149,7 @@ export function HeroBlock({ onOpenCalculator }: HeroBlockProps) {
               <div className="absolute inset-2 border border-brand-light/5 z-20 pointer-events-none" />
               
               <img
-                src="/azhur/photo/hero.jpg"
+                src="/azhur/photo/hero.webp"
                 alt="Главный инженер Олег"
                 className="absolute inset-0 w-full h-full object-cover transition-all duration-1000 filter brightness-90 group-hover:brightness-100 group-hover:scale-105"
               />

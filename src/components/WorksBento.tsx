@@ -66,11 +66,11 @@ const bentoItems: BentoItem[] = [
     used: "Потолок ПВХ Bauf 270, теневое примыкание EuroKraab, ниша для штор Lumfer PDK100",
     thumbnailVideo: "/new_image_azhur/nezhinskaya/1.mp4",
     galleryImages: [
-      "/new_image_azhur/nezhinskaya/1.jpg",
-      "/new_image_azhur/nezhinskaya/2.jpg",
-      "/new_image_azhur/nezhinskaya/3.jpg",
-      "/new_image_azhur/nezhinskaya/4.jpg",
-      "/new_image_azhur/nezhinskaya/5.jpg"
+      "/new_image_azhur/nezhinskaya/1.webp",
+      "/new_image_azhur/nezhinskaya/2.webp",
+      "/new_image_azhur/nezhinskaya/3.webp",
+      "/new_image_azhur/nezhinskaya/4.webp",
+      "/new_image_azhur/nezhinskaya/5.webp"
     ],
     gridClass: "sm:col-span-2 lg:col-span-4 lg:row-span-1 h-[250px] sm:h-[280px] lg:h-[320px]",
     serviceName: "Натяжные потолки"

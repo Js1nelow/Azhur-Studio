@@ -26,7 +26,7 @@ export function AboutBlock() {
             >
               <div className="absolute inset-0 bg-gradient-to-t from-brand-black/80 via-brand-black/20 to-transparent z-10" />
               <img
-                src="/azhur/photo/o_nas.jpg"
+                src="/azhur/photo/o_nas.webp"
                 alt="Олег — основатель Ажур Студии"
                 className="w-full h-full object-cover md:grayscale md:brightness-90 md:group-hover:grayscale-0 grayscale-0 brightness-100 transition-all duration-1000 ease-out"
               />
