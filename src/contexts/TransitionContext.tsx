@@ -42,17 +42,17 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
       {children}
       <AnimatePresence>
         {isTransitioning && (
-          <>
+          <motion.div key="transition-wrapper" className="fixed inset-0 z-[9998] pointer-events-auto">
             {/* Red block */}
             <motion.div
-              className="fixed inset-0 z-[9998] bg-brand-red pointer-events-auto"
+              className="absolute inset-0 bg-brand-red"
               initial={{ y: '100%' }}
               animate={{ y: '0%', transition: { duration: 0.6, ease: [0.76, 0, 0.24, 1] } }}
               exit={{ y: '-100%', transition: { duration: 0.6, delay: 0.15, ease: [0.76, 0, 0.24, 1] } }}
             />
             {/* Black block */}
             <motion.div
-              className="fixed inset-0 z-[9999] flex items-center justify-center bg-brand-black pointer-events-auto"
+              className="absolute inset-0 z-10 flex items-center justify-center bg-brand-black"
               initial={{ y: '100%' }}
               animate={{ y: '0%', transition: { duration: 0.6, delay: 0.15, ease: [0.76, 0, 0.24, 1] } }}
               exit={{ y: '-100%', transition: { duration: 0.6, ease: [0.76, 0, 0.24, 1] } }}
@@ -66,7 +66,7 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
                 {label}
               </motion.div>
             </motion.div>
-          </>
+          </motion.div>
         )}
       </AnimatePresence>
     </TransitionContext.Provider>

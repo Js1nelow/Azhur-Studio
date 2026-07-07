@@ -169,7 +169,9 @@ app.post('/api/send-lead', apiLimiter, async (req: express.Request<{}, {}, LeadR
 });
 
 async function startServer() {
-  if (process.env.NODE_ENV !== "production") {
+  const isProd = process.env.NODE_ENV === 'production' || (process.argv[1] && process.argv[1].endsWith('server.cjs'));
+
+  if (!isProd) {
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
