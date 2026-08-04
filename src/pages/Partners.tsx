@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Handshake, Calculator, MessageSquare, MapPin, ArrowRight, CheckCircle, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { reachMetrikaGoal } from '../components/YandexMetrika';
 
 export function Partners() {
   const [name, setName] = useState('');
@@ -75,6 +76,8 @@ export function Partners() {
       const data = await response.json().catch(() => null);
 
       if (response.ok && data?.success) {
+        reachMetrikaGoal('lead_submit');
+        reachMetrikaGoal('lead_partners');
         setIsSubmitted(true);
         setName('');
         setPhone('');

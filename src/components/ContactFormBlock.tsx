@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Phone, Calculator, Ruler, CheckCircle, ArrowRight } from 'lucide-react';
+import { reachMetrikaGoal } from './YandexMetrika';
 
 export function ContactFormBlock() {
   const [name, setName] = useState('');
@@ -72,6 +73,8 @@ export function ContactFormBlock() {
       const data = await response.json().catch(() => null);
 
       if (response.ok && data?.success) {
+        reachMetrikaGoal('lead_submit');
+        reachMetrikaGoal('lead_contact');
         setIsSubmitted(true);
         setName('');
         setPhone('');

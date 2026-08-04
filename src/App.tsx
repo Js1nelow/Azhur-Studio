@@ -6,6 +6,7 @@ import { CostModal } from './components/CostModal';
 import { Home } from './pages/Home';
 import { Partners } from './pages/Partners';
 import { TransitionProvider } from './contexts/TransitionContext';
+import { YandexMetrika } from './components/YandexMetrika';
 
 export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,6 +23,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
+      <YandexMetrika />
       <TransitionProvider>
         <div className="min-h-screen bg-brand-black text-brand-light selection:bg-brand-red selection:text-white overflow-x-hidden">
           {/* Navigation Bar */}

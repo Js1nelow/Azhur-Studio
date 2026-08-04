@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Check, Calculator, Phone } from 'lucide-react';
+import { reachMetrikaGoal } from './YandexMetrika';
 
 interface CostModalProps {
   isOpen: boolean;
@@ -94,6 +95,8 @@ export function CostModal({ isOpen, onClose, selectedService = 'Натяжные
       const data = await response.json().catch(() => null);
 
       if (response.ok && data?.success) {
+        reachMetrikaGoal('lead_submit');
+        reachMetrikaGoal('lead_calculator');
         setIsSubmitted(true);
       } else {
         const errorMsg = data?.error || 'Не удалось отправить заявку. Попробуйте позже.';
