@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 
 const sections = [
@@ -71,7 +70,7 @@ export function Privacy() {
   return (
     <main className="min-h-screen bg-brand-black px-6 pb-24 pt-32 text-brand-light md:px-12 md:pt-40">
       <article className="mx-auto max-w-4xl">
-        <Link to="/" className="mb-10 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-brand-gray hover:text-brand-red"><ArrowLeft size={15} /> На главную</Link>
+        <a href="/" className="mb-10 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-brand-gray hover:text-brand-red"><ArrowLeft size={15} /> На главную</a>
         <p className="mb-4 font-mono text-xs uppercase tracking-widest text-brand-red">[ Документы ]</p>
         <h1 className="mb-12 text-3xl font-bold uppercase leading-tight md:text-5xl">Политика в отношении обработки персональных данных</h1>
         <div className="space-y-12">
