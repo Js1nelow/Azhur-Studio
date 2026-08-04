@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
+import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 const COUNTER_ID = 111296243;
+const CONSENT_KEY = 'cookieConsent';
 
 declare global {
   interface Window {
@@ -17,8 +19,16 @@ export function reachMetrikaGoal(goal: string) {
 
 export function YandexMetrika() {
   const location = useLocation();
+  const [hasConsent, setHasConsent] = useState(() => localStorage.getItem(CONSENT_KEY) === 'true');
 
   useEffect(() => {
+    const accept = () => setHasConsent(true);
+    window.addEventListener('cookie-consent-accepted', accept);
+    return () => window.removeEventListener('cookie-consent-accepted', accept);
+  }, []);
+
+  useEffect(() => {
+    if (!hasConsent) return;
     if (!window.ym) {
       window.ym = function (...args: unknown[]) {
         (window.ym as typeof window.ym & { a?: unknown[] }).a ||= [];
@@ -43,9 +53,10 @@ export function YandexMetrika() {
       });
       window.__yandexMetrikaInitialized = true;
     }
-  }, []);
+  }, [hasConsent]);
 
   useEffect(() => {
+    if (!hasConsent) return;
     const url = window.location.href;
     if (window.__yandexMetrikaLastUrl === url) return;
 
@@ -54,7 +65,7 @@ export function YandexMetrika() {
       referer: window.__yandexMetrikaLastUrl || document.referrer,
     });
     window.__yandexMetrikaLastUrl = url;
-  }, [location.pathname, location.search, location.hash]);
+  }, [hasConsent, location.pathname, location.search, location.hash]);
 
   return null;
 }

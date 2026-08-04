@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Handshake, Calculator, MessageSquare, MapPin, ArrowRight, CheckCircle, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { reachMetrikaGoal } from '../components/YandexMetrika';
+import { PrivacyConsent } from '../components/PrivacyConsent';
 
 export function Partners() {
   const [name, setName] = useState('');
@@ -206,6 +207,7 @@ export function Partners() {
                   />
                 </div>
 
+                <PrivacyConsent />
                 <button
                   type="submit"
                   disabled={isSubmitting || !isPhoneValid}

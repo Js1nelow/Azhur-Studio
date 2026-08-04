@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Check, Calculator, Phone } from 'lucide-react';
 import { reachMetrikaGoal } from './YandexMetrika';
+import { PrivacyConsent } from './PrivacyConsent';
 
 interface CostModalProps {
   isOpen: boolean;
@@ -253,6 +254,7 @@ export function CostModal({ isOpen, onClose, selectedService = 'Натяжные
                     </div>
                   </div>
 
+                  <PrivacyConsent />
                   <button
                     type="submit"
                     disabled={isSubmitting || !isPhoneValid}

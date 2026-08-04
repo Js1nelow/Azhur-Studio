@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Phone, Calculator, Ruler, CheckCircle, ArrowRight } from 'lucide-react';
 import { reachMetrikaGoal } from './YandexMetrika';
+import { PrivacyConsent } from './PrivacyConsent';
 
 export function ContactFormBlock() {
   const [name, setName] = useState('');
@@ -201,6 +202,7 @@ export function ContactFormBlock() {
                       />
                     </div>
 
+                    <PrivacyConsent />
                     {/* Submit Button */}
                     <button
                       type="submit"
