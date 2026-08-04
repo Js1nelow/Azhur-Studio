@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Check, Calculator, Phone } from 'lucide-react';
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 interface CostModalProps {
   isOpen: boolean;
@@ -10,7 +9,6 @@ interface CostModalProps {
 }
 
 export function CostModal({ isOpen, onClose, selectedService = 'Натяжные потолки' }: CostModalProps) {
-  const { executeRecaptcha } = useGoogleReCaptcha();
   const [services, setServices] = useState<string[]>([selectedService]);
   const [area, setArea] = useState(25);
   const [name, setName] = useState('');
@@ -82,14 +80,6 @@ export function CostModal({ isOpen, onClose, selectedService = 'Натяжные
     setError(null);
     
     try {
-      if (!executeRecaptcha) {
-        setError('Защита от спама еще загружается. Пожалуйста, подождите пару секунд и попробуйте снова.');
-        setIsSubmitting(false);
-        return;
-      }
-      
-      const recaptchaToken = await executeRecaptcha('cost_calculator');
-      
       const response = await fetch('/api/send-lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -97,8 +87,7 @@ export function CostModal({ isOpen, onClose, selectedService = 'Натяжные
           name, 
           phone, 
           source: 'Модальное окно расчёта',
-          details: `Интересует: ${services.join(', ')}. Площадь: ${area} м²`,
-          recaptchaToken
+          details: `Интересует: ${services.join(', ')}. Площадь: ${area} м²`
         })
       });
       

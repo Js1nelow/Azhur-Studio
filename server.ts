@@ -58,45 +58,12 @@ interface LeadRequest {
   comment?: string;
   source?: string;
   details?: string;
-  recaptchaToken?: string;
 }
 
 // API route to send lead to Max Bot
 app.post('/api/send-lead', apiLimiter, async (req: express.Request<{}, {}, LeadRequest>, res: express.Response) => {
   try {
-    const { name, phone, comment, source, details, recaptchaToken } = req.body;
-    
-    // Бэкенд-валидация reCAPTCHA
-    const recaptchaSecret = process.env.RECAPTCHA_SECRET_KEY || '6Le9r0gtAAAAADnZKEtvpNavBZLui4gcq6b0XMuP';
-    if (recaptchaSecret && recaptchaToken) {
-      const verifyUrl = `https://www.google.com/recaptcha/api/siteverify`;
-      const verifyResponse = await fetch(verifyUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `secret=${recaptchaSecret}&response=${recaptchaToken}`,
-      });
-      const verifyData = await verifyResponse.json();
-      console.log('reCAPTCHA verify response:', verifyData);
-      
-      if (!verifyData.success) {
-        // Если ошибка связана с окружением браузера (например, iframe песочницы или блокировщик рекламы),
-        // пропускаем заявку, чтобы не блокировать реальных пользователей.
-        if (verifyData['error-codes'] && verifyData['error-codes'].includes('browser-error')) {
-          console.warn('reCAPTCHA skipped due to browser-error (iframe/adblock).');
-        } else {
-          console.error('reCAPTCHA validation failed:', verifyData);
-          return res.status(400).json({ success: false, error: 'Проверка защиты от спама не пройдена. Пожалуйста, обновите страницу и попробуйте еще раз.' });
-        }
-      }
-      
-      if (verifyData.success && verifyData.score !== undefined && verifyData.score < 0.5) {
-        console.warn('reCAPTCHA low score:', verifyData.score);
-        // Temporarily allow low score or just return it in the error for debugging
-        return res.status(400).json({ success: false, error: 'Проверка reCAPTCHA не пройдена (низкий рейтинг: ' + verifyData.score + ')' });
-      }
-    } else if (recaptchaSecret && !recaptchaToken) {
-      return res.status(400).json({ success: false, error: 'Отсутствует токен reCAPTCHA.' });
-    }
+    const { name, phone, comment, source, details } = req.body;
 
     // Санитаризация данных (защита от XSS)
     const safeName = name ? xss(name) : undefined;

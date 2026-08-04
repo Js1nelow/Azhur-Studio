@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Handshake, Calculator, MessageSquare, MapPin, ArrowRight, CheckCircle, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 export function Partners() {
-  const { executeRecaptcha } = useGoogleReCaptcha();
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -64,22 +62,13 @@ export function Partners() {
     setError(null);
     
     try {
-      if (!executeRecaptcha) {
-        setError('Защита от спама еще загружается. Пожалуйста, подождите пару секунд и попробуйте снова.');
-        setIsSubmitting(false);
-        return;
-      }
-      
-      const recaptchaToken = await executeRecaptcha('partners_form');
-      
       const response = await fetch('/api/send-lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           name, 
           phone, 
-          source: 'Страница Партнерам',
-          recaptchaToken
+          source: 'Страница Партнерам'
         })
       });
       
