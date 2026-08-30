@@ -4,12 +4,18 @@ import { createServer as createViteServer } from 'vite';
 import * as dotenv from 'dotenv';
 import rateLimit from 'express-rate-limit';
 import cors from 'cors';
+import helmet from 'helmet';
 import xss from 'xss';
 
 dotenv.config();
 
 const app = express();
 app.set('trust proxy', 1); // Trust first proxy for express-rate-limit
+
+// Заголовки безопасности (X-Content-Type-Options, X-Frame-Options, HSTS и др.)
+app.use(helmet({
+  contentSecurityPolicy: false, // Отключаем CSP чтобы не ломать inline-стили React
+}));
 
 const PORT = 3000;
 
@@ -32,9 +38,7 @@ app.use('/api', cors({
     if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
       callback(null, true);
     } else {
-      // Вместо ошибки просто разрешаем, чтобы избежать 500 ошибки при несовпадении
-      // (защита обеспечивается reCAPTCHA и rate limiter)
-      callback(null, true);
+      callback(new Error('Origin not allowed by CORS: ' + origin));
     }
   },
   methods: ['POST', 'GET', 'OPTIONS'],
@@ -58,47 +62,13 @@ interface LeadRequest {
   comment?: string;
   source?: string;
   details?: string;
-  recaptchaToken?: string;
 }
 
 // API route to send lead to Max Bot
 app.post('/api/send-lead', apiLimiter, async (req: express.Request<{}, {}, LeadRequest>, res: express.Response) => {
   try {
-    const { name, phone, comment, source, details, recaptchaToken } = req.body;
+    const { name, phone, comment, source, details } = req.body;
     
-    // Бэкенд-валидация reCAPTCHA
-    const recaptchaSecret = process.env.RECAPTCHA_SECRET_KEY || '6Le9r0gtAAAAADnZKEtvpNavBZLui4gcq6b0XMuP';
-    if (recaptchaSecret && recaptchaToken) {
-      const verifyUrl = `https://www.google.com/recaptcha/api/siteverify`;
-      const verifyResponse = await fetch(verifyUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `secret=${recaptchaSecret}&response=${recaptchaToken}`,
-      });
-      const verifyData = await verifyResponse.json();
-      console.log('reCAPTCHA verify response:', verifyData);
-      
-      if (!verifyData.success) {
-        // Если ошибка связана с окружением браузера (например, iframe песочницы или блокировщик рекламы),
-        // пропускаем заявку, чтобы не блокировать реальных пользователей.
-        if (verifyData['error-codes'] && verifyData['error-codes'].includes('browser-error')) {
-          console.warn('reCAPTCHA skipped due to browser-error (iframe/adblock).');
-        } else {
-          console.error('reCAPTCHA validation failed:', verifyData);
-          return res.status(400).json({ success: false, error: 'Проверка защиты от спама не пройдена. Пожалуйста, обновите страницу и попробуйте еще раз.' });
-        }
-      }
-      
-      if (verifyData.success && verifyData.score !== undefined && verifyData.score < 0.5) {
-        console.warn('reCAPTCHA low score:', verifyData.score);
-        // Temporarily allow low score or just return it in the error for debugging
-        return res.status(400).json({ success: false, error: 'Проверка reCAPTCHA не пройдена (низкий рейтинг: ' + verifyData.score + ')' });
-      }
-    } else if (recaptchaSecret && !recaptchaToken) {
-      return res.status(400).json({ success: false, error: 'Отсутствует токен reCAPTCHA.' });
-    }
-
-    // Санитаризация данных (защита от XSS)
     const safeName = name ? xss(name) : undefined;
     const safePhone = phone ? xss(phone) : '';
     const safeComment = comment ? xss(comment) : undefined;
@@ -112,6 +82,8 @@ app.post('/api/send-lead', apiLimiter, async (req: express.Request<{}, {}, LeadR
 
     if (safeName && safeName.length > 100) return res.status(400).json({ success: false, error: 'Имя слишком длинное' });
     if (safeComment && safeComment.length > 1000) return res.status(400).json({ success: false, error: 'Комментарий слишком длинный' });
+    if (safeSource && safeSource.length > 200) return res.status(400).json({ success: false, error: 'Поле источника слишком длинное' });
+    if (safeDetails && safeDetails.length > 500) return res.status(400).json({ success: false, error: 'Поле деталей слишком длинное' });
 
     // Format the message
     let messageText = `🔥 Новая заявка с сайта!\n\n`;
@@ -122,12 +94,7 @@ app.post('/api/send-lead', apiLimiter, async (req: express.Request<{}, {}, LeadR
     if (safeComment) messageText += `Комментарий: ${safeComment}\n`;
 
     const maxBotToken = process.env.MAX_BOT_TOKEN;
-    let maxChannelId = process.env.MAX_CHANNEL_ID;
-    
-    // Автоматическое исправление, если в настройках ошибочно указан ID бота
-    if (maxChannelId === '13289223') {
-      maxChannelId = '329610108';
-    }
+    const maxChannelId = process.env.MAX_CHANNEL_ID;
     
     if (!maxBotToken || !maxChannelId) {
       console.warn("MAX_BOT_TOKEN or MAX_CHANNEL_ID is not set in environment variables. Simulating success.");

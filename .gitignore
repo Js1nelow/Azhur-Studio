@@ -6,3 +6,10 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Тестовые/отладочные скрипты (могут содержать секреты)
+test_*
+test-*
+test.*
+get_*
+test-deploy/
