@@ -9,6 +9,7 @@ import { TransitionProvider } from './contexts/TransitionContext';
 import { YandexMetrika } from './components/YandexMetrika';
 import { CookieBanner } from './components/CookieBanner';
 import { Privacy } from './pages/Privacy';
+import { FloatingContactWidget } from './components/FloatingContactWidget';
 
 export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -47,6 +48,8 @@ export default function App() {
             selectedService={selectedService} 
           />
           <CookieBanner />
+          {/* Floating Contact Widget — always on top */}
+          <FloatingContactWidget />
         </div>
       </TransitionProvider>
     </BrowserRouter>
