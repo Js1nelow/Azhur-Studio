@@ -95,45 +95,54 @@ app.post('/api/send-lead', apiLimiter, async (req: express.Request<{}, {}, LeadR
 
     const maxBotToken = process.env.MAX_BOT_TOKEN;
     const maxChannelId = process.env.MAX_CHANNEL_ID;
-    
+    const maxChannelId2 = process.env.MAX_CHANNEL_ID_2;
+
     if (!maxBotToken || !maxChannelId) {
       console.warn("MAX_BOT_TOKEN or MAX_CHANNEL_ID is not set in environment variables. Simulating success.");
-      // For development/preview when token isn't in env yet, we still return success to the client
       return res.json({ success: true, simulated: true });
     }
 
-    const botApiUrl = `https://platform-api.max.ru/messages?user_id=${maxChannelId}`; 
+    // Отправляем всем получателям параллельно
+    const recipients = [maxChannelId, maxChannelId2].filter(Boolean) as string[];
 
-    const response = await fetch(botApiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `${maxBotToken}`
-      },
-      body: JSON.stringify({
-        text: messageText,
-      })
-    });
+    const sendToRecipient = async (chatId: string) => {
+      const url = `https://platform-api.max.ru/messages?user_id=${chatId}`;
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `${maxBotToken}`,
+        },
+        body: JSON.stringify({ text: messageText }),
+      });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      let errorMessage = `Max API error: ${response.statusText}`;
-      
-      try {
-        const errorJson = JSON.parse(errorText);
-        if (response.status === 404 && errorJson.code === 'chat.not.found') {
-          errorMessage = 'Бот не может отправить сообщение: пожалуйста, сначала напишите боту любое сообщение для открытия диалога.';
-        } else {
-          errorMessage = errorJson.message || errorMessage;
-        }
-      } catch (e) {
-        // Ignored, use default
+      if (!response.ok) {
+        const errorText = await response.text();
+        let errorMessage = `Max API error [chat ${chatId}]: ${response.statusText}`;
+        try {
+          const errorJson = JSON.parse(errorText);
+          if (response.status === 404 && errorJson.code === 'chat.not.found') {
+            errorMessage = `Чат ${chatId}: откройте диалог с ботом перед получением сообщений.`;
+          } else {
+            errorMessage = errorJson.message || errorMessage;
+          }
+        } catch (_) { /* ignore */ }
+        throw new Error(errorMessage);
       }
-      
-      throw new Error(errorMessage);
+      return response.json();
+    };
+
+    const results = await Promise.allSettled(recipients.map(sendToRecipient));
+
+    const failed = results.filter(r => r.status === 'rejected') as PromiseRejectedResult[];
+    if (failed.length > 0) {
+      failed.forEach(f => console.error('MAX send error:', f.reason?.message));
+      // Если хотя бы один успешен — считаем успехом
+      const anySuccess = results.some(r => r.status === 'fulfilled');
+      if (!anySuccess) throw new Error(failed[0].reason?.message || 'Ошибка отправки');
     }
 
-    res.json({ success: true });
+    res.json({ success: true, sent: recipients.length - failed.length });
   } catch (error: any) {
     console.error('Error sending lead to Max Bot:', error.message);
     // Не отправляем внутренние ошибки на клиент
