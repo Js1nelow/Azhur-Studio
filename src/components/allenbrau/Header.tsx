@@ -47,11 +47,11 @@ export function Header() {
         </div>
 
         {/* Center: Brand Logo */}
-        <Link href="/" className="flex items-center select-none">
+        <a href="/allenbrau" className="flex items-center select-none">
           <span className="text-xl sm:text-2xl font-suisse font-light tracking-[0.25em] text-white uppercase">
             ALLEN BRAU
           </span>
-        </Link>
+        </a>
 
         {/* Desktop Navigation */}
         <nav className="hidden xl:flex items-center gap-8 text-xs uppercase tracking-[0.18em] font-suisse text-white/80">
