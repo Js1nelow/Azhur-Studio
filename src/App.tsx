@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { Navbar } from './components/Layout/Navbar';
 import { Footer } from './components/Layout/Footer';
 import { CostModal } from './components/CostModal';
@@ -10,8 +10,10 @@ import { YandexMetrika } from './components/YandexMetrika';
 import { CookieBanner } from './components/CookieBanner';
 import { Privacy } from './pages/Privacy';
 import { FloatingContactWidget } from './components/FloatingContactWidget';
+import { AllenBrauPage } from './pages/AllenBrauPage';
 
-export default function App() {
+function AppContent() {
+  const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState<string | undefined>(undefined);
 
@@ -24,34 +26,44 @@ export default function App() {
     setIsModalOpen(false);
   };
 
+  if (location.pathname.startsWith('/allenbrau')) {
+    return <AllenBrauPage />;
+  }
+
+  return (
+    <TransitionProvider>
+      <div className="min-h-screen bg-brand-black text-brand-light selection:bg-brand-red selection:text-white overflow-x-hidden">
+        {/* Navigation Bar */}
+        <Navbar onOpenCalculator={() => handleOpenCalculator()} />
+        
+        <Routes>
+          <Route path="/" element={<Home onOpenCalculator={handleOpenCalculator} />} />
+          <Route path="/partners" element={<Partners />} />
+          <Route path="/privacy/" element={<Privacy />} />
+        </Routes>
+        
+        {/* Footer Section */}
+        <Footer />
+
+        {/* Interactive Callback & Pricing Calculator Modal */}
+        <CostModal 
+          isOpen={isModalOpen} 
+          onClose={handleCloseCalculator} 
+          selectedService={selectedService} 
+        />
+        <CookieBanner />
+        {/* Floating Contact Widget — always on top */}
+        <FloatingContactWidget />
+      </div>
+    </TransitionProvider>
+  );
+}
+
+export default function App() {
   return (
     <BrowserRouter>
       <YandexMetrika />
-      <TransitionProvider>
-        <div className="min-h-screen bg-brand-black text-brand-light selection:bg-brand-red selection:text-white overflow-x-hidden">
-          {/* Navigation Bar */}
-          <Navbar onOpenCalculator={() => handleOpenCalculator()} />
-          
-          <Routes>
-            <Route path="/" element={<Home onOpenCalculator={handleOpenCalculator} />} />
-            <Route path="/partners" element={<Partners />} />
-            <Route path="/privacy/" element={<Privacy />} />
-          </Routes>
-          
-          {/* Footer Section */}
-          <Footer />
-
-          {/* Interactive Callback & Pricing Calculator Modal */}
-          <CostModal 
-            isOpen={isModalOpen} 
-            onClose={handleCloseCalculator} 
-            selectedService={selectedService} 
-          />
-          <CookieBanner />
-          {/* Floating Contact Widget — always on top */}
-          <FloatingContactWidget />
-        </div>
-      </TransitionProvider>
+      <AppContent />
     </BrowserRouter>
   );
 }
