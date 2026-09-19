@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Phone, MessageCircle } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTransition } from '../../contexts/TransitionContext';
 
@@ -16,11 +16,11 @@ export function Navbar({ onOpenCalculator }: NavbarProps) {
 
   useEffect(() => {
     if (location.pathname !== '/') return;
-    const sections = ['hero', 'works', 'services', 'process', 'reviews', 'about', 'faq', 'contact'];
+    const sections = ['hero', 'catalog', 'works', 'reasons', 'process', 'reviews', 'about', 'faq', 'contact'];
     
     const observerOptions = {
       root: null,
-      rootMargin: '-40% 0px -50% 0px', // Triggers when section is comfortably in the viewport center
+      rootMargin: '-30% 0px -60% 0px',
       threshold: 0,
     };
 
@@ -45,12 +45,12 @@ export function Navbar({ onOpenCalculator }: NavbarProps) {
         if (el) observer.unobserve(el);
       });
     };
-  }, []);
+  }, [location.pathname]);
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (location.pathname !== '/') {
       setIsOpen(false);
-      return; // Let react-router handle the navigation to /#id
+      return;
     }
     e.preventDefault();
     setIsOpen(false);
@@ -61,12 +61,11 @@ export function Navbar({ onOpenCalculator }: NavbarProps) {
   };
 
   const navLinks = [
-    { href: '#works', id: 'works', label: 'Портфолио' },
-    { href: '#services', id: 'services', label: 'Услуги' },
-    { href: '#process', id: 'process', label: 'Этапы работы' },
+    { href: '#catalog', id: 'catalog', label: 'Каталог и цены' },
+    { href: '#works', id: 'works', label: 'Кейсы' },
+    { href: '#reasons', id: 'reasons', label: 'Преимущества' },
+    { href: '#catalog-download', id: 'catalog-download', label: 'Прайс-лист' },
     { href: '#reviews', id: 'reviews', label: 'Отзывы' },
-    { href: '#about', id: 'about', label: 'О нас' },
-    { href: '#faq', id: 'faq', label: 'FAQ' },
     { href: '#contact', id: 'contact', label: 'Контакты' },
   ];
 
@@ -74,40 +73,50 @@ export function Navbar({ onOpenCalculator }: NavbarProps) {
     <motion.header 
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="fixed top-0 left-0 right-0 z-50 hairline-b bg-brand-black/80 backdrop-blur-md"
+      className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-brand-black/85 backdrop-blur-md"
     >
       <div className="max-w-[1440px] mx-auto px-6 h-20 flex items-center justify-between w-full">
-        {/* Left Side: Logo (Serif style, as in mockup screenshot) */}
-        <div className="flex items-center">
+        
+        {/* Left Side: Brand Logo */}
+        <div className="flex items-center gap-6">
           <Link 
             to="/#hero" 
             onClick={(e) => handleLinkClick(e, '#hero')} 
-            className="font-serif font-bold text-2xl uppercase tracking-[0.08em] text-white hover:text-brand-red transition-colors duration-300 select-none"
+            className="flex items-baseline gap-1 select-none group"
           >
-            АЖУР
+            <span className="font-suisse font-bold text-2xl uppercase tracking-tight text-white group-hover:text-brand-light transition-colors">
+              AZHUR
+            </span>
+            <span className="font-serif-italic italic text-brand-red text-xl font-normal">
+              Studio
+            </span>
           </Link>
+
+          <span className="hidden xl:inline-block text-[11px] text-brand-gray font-suisse border-l border-white/10 pl-4 py-0.5">
+            Потолки и свет в Москве и МО
+          </span>
         </div>
 
-        {/* Right Side: Desktop Nav links & Estimate CTAs */}
-        <div className="hidden md:flex items-center justify-center">
-          <nav className="flex items-center gap-5 lg:gap-7 font-mono text-xs uppercase tracking-[0.12em]">
+        {/* Center: Nav links */}
+        <div className="hidden lg:flex items-center justify-center">
+          <nav className="flex items-center gap-6 xl:gap-8 font-suisse text-xs uppercase tracking-wider font-medium">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 to={`/${link.href}`}
                 onClick={(e) => handleLinkClick(e, link.href)}
-                className={`transition-colors duration-300 relative py-1.5 font-semibold ${
+                className={`transition-colors duration-200 py-1.5 relative ${
                   activeSection === link.id
-                    ? 'text-brand-red'
-                    : 'text-brand-light/80 hover:text-white'
+                    ? 'text-white'
+                    : 'text-brand-gray hover:text-white'
                 }`}
               >
                 {link.label}
                 {activeSection === link.id && (
                   <motion.span
-                    layoutId="activeIndicator"
+                    layoutId="activeNavTab"
                     className="absolute bottom-0 left-0 right-0 h-[2px] bg-brand-red"
-                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    transition={{ type: 'spring', stiffness: 350, damping: 30 }}
                   />
                 )}
               </Link>
@@ -115,51 +124,59 @@ export function Navbar({ onOpenCalculator }: NavbarProps) {
           </nav>
         </div>
 
-        {/* Right Side: Estimate CTAs */}
-        <div className="flex items-center justify-end gap-3 lg:gap-4">
-          {/* Partners Button */}
-          <button
-            onClick={() => navigateWithTransition('/partners', 'ПАРТНЕРЫ')}
-            className="hidden lg:block border border-brand-light/30 hover:border-brand-light text-brand-light px-5 py-2.5 font-mono text-[10px] uppercase tracking-wider transition-all cursor-pointer font-bold"
-          >
-            Партнёрам
-          </button>
+        {/* Right Side: Phone, Messenger & Estimate CTA */}
+        <div className="flex items-center gap-4 sm:gap-6">
+          
+          {/* Phone block */}
+          <div className="hidden sm:flex flex-col items-end">
+            <a 
+              href="tel:+74959713123" 
+              className="font-suisse font-semibold text-sm text-white hover:text-brand-red transition-colors flex items-center gap-1.5"
+            >
+              <Phone size={13} className="text-brand-red" />
+              <span>+7 (495) 971-31-23</span>
+            </a>
+            <div className="flex items-center gap-1.5 text-[10px] text-emerald-400 font-suisse">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span>Ежедневно 9:00 – 21:00</span>
+            </div>
+          </div>
 
-          {/* Calculate Button (Only visible on lg+) */}
+          {/* Calculate Button */}
           <button
             onClick={() => onOpenCalculator()}
-            className="hidden lg:block bg-brand-red hover:bg-brand-red/90 text-white px-5 py-2.5 font-mono text-[10px] uppercase tracking-wider transition-all cursor-pointer font-bold"
+            className="hidden md:flex bg-brand-red hover:bg-brand-red-hover text-white px-5 py-2.5 rounded-lg font-suisse text-xs uppercase tracking-wider font-semibold transition-all cursor-pointer shadow-md shadow-brand-red/20"
           >
             Рассчитать смету
           </button>
           
           {/* Mobile Menu Trigger */}
           <button 
-            className="relative z-[60] text-brand-light p-2 -mr-2 group hover:text-brand-red transition-colors md:hidden cursor-pointer"
+            className="relative z-[60] text-white p-2 -mr-2 hover:text-brand-red transition-colors lg:hidden cursor-pointer"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
           >
-            {isOpen ? <X size={24} strokeWidth={1.5} /> : <Menu size={24} strokeWidth={1.5} />}
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
+
       </div>
 
+      {/* Mobile Menu Dropdown */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, y: "-100%" }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: "-100%" }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 bg-brand-black z-50 flex flex-col pt-24 pb-12 px-6 min-h-screen"
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 bg-brand-black z-50 flex flex-col pt-24 pb-10 px-6 min-h-screen"
           >
-            <nav className="flex flex-col items-center justify-center gap-6 font-display text-sm md:text-base uppercase tracking-tighter text-brand-light text-center flex-1">
+            <nav className="flex flex-col items-center justify-center gap-6 font-suisse text-lg uppercase tracking-tight text-white text-center flex-1">
               <Link 
                 to="/#hero" 
                 onClick={(e) => handleLinkClick(e, '#hero')} 
-                className={`transition-colors duration-300 ${
-                  activeSection === 'hero' ? 'text-brand-red' : 'hover:text-brand-red'
-                }`}
+                className="hover:text-brand-red transition-colors"
               >
                 Главная
               </Link>
@@ -168,39 +185,41 @@ export function Navbar({ onOpenCalculator }: NavbarProps) {
                   key={link.href}
                   to={`/${link.href}`}
                   onClick={(e) => handleLinkClick(e, link.href)}
-                  className={`transition-colors duration-300 ${
-                    activeSection === link.id ? 'text-brand-red' : 'hover:text-brand-red'
-                  }`}
+                  className="hover:text-brand-red transition-colors"
                 >
                   {link.label}
                 </Link>
               ))}
             </nav>
 
-            <div className="flex flex-col items-center gap-6 w-full max-w-sm mx-auto shrink-0 mt-8">
-              <div className="flex w-full gap-3">
-                <button
-                  onClick={() => {
-                    setIsOpen(false);
-                    navigateWithTransition('/partners', 'ПАРТНЕРЫ');
-                  }}
-                  className="flex-1 border border-brand-light/30 hover:border-brand-light text-brand-light flex items-center justify-center font-mono text-[10px] uppercase tracking-widest py-3 transition-all cursor-pointer text-center"
-                >
-                  Партнёрам
-                </button>
-                <button
-                  onClick={() => {
-                    setIsOpen(false);
-                    onOpenCalculator();
-                  }}
-                  className="flex-1 bg-brand-red hover:bg-brand-red/90 text-white font-mono text-[10px] uppercase tracking-widest py-3 transition-all cursor-pointer text-center"
-                >
-                  Рассчитать смету
-                </button>
-              </div>
-              <div className="font-mono text-[10px] text-brand-gray tracking-wider">
-                <div>АЖУР СТУДИЯ • МОСКВА И МО</div>
-              </div>
+            <div className="flex flex-col items-center gap-4 w-full max-w-xs mx-auto shrink-0 mt-6">
+              <a 
+                href="tel:+74959713123" 
+                className="font-suisse font-semibold text-lg text-white flex items-center gap-2"
+              >
+                <Phone size={16} className="text-brand-red" />
+                <span>+7 (495) 971-31-23</span>
+              </a>
+
+              <button
+                onClick={() => {
+                  setIsOpen(false);
+                  onOpenCalculator();
+                }}
+                className="w-full bg-brand-red hover:bg-brand-red-hover text-white font-suisse text-xs uppercase tracking-wider py-4 rounded-xl transition-all font-semibold text-center cursor-pointer shadow-lg shadow-brand-red/25"
+              >
+                Рассчитать стоимость со скидкой 15%
+              </button>
+
+              <button
+                onClick={() => {
+                  setIsOpen(false);
+                  navigateWithTransition('/partners', 'ПАРТНЕРЫ');
+                }}
+                className="text-xs font-suisse text-brand-gray hover:text-white pt-2 cursor-pointer"
+              >
+                Для дизайнеров и прорабов
+              </button>
             </div>
           </motion.div>
         )}

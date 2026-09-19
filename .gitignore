@@ -13,3 +13,7 @@ test-*
 test.*
 get_*
 test-deploy/
+
+# Reference assets and local helper scripts
+reference/
+scripts/

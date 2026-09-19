@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowRight, Cpu, Sliders, Layers, Eye, ShieldCheck, ChevronRight } from 'lucide-react';
+import { ArrowRight, Check, Sparkles, Layers, Sliders, Cpu, Eye, Sun } from 'lucide-react';
 
 interface ServicesBlockProps {
   onOpenCalculator: (service: string) => void;
@@ -9,294 +9,256 @@ interface ServicesBlockProps {
 export function ServicesBlock({ onOpenCalculator }: ServicesBlockProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const services = [
+  const collections = [
     {
-      id: "01",
-      title: "Натяжные потолки",
-      subtitle: "Бесшовные системы A-Класса",
-      description: "Идеально ровные матовые, сатиновые или глянцевые полотна премиум-качества. Монтаж без швов и трещин за 1 день.",
-      icon: Layers,
+      id: "matte",
+      num: "01",
+      name: "Матовые и сатиновые",
+      tag: "Базовый комфорт",
+      price: "от 650 ₽/м²",
+      title: "Классические бесшовные потолки",
+      description: "Идеально ровная матовая или сатиновая поверхность, неотличимая от качественной штукатурки. Никаких трещин от усадки дома, идеальная белизна на десятилетия.",
+      image: "/new_image_azhur/nezhinskaya/1.webp",
       specs: [
-        { label: "Материал", value: "MSD Premium / Bauf / Teqtum" },
-        { label: "Экологичность", value: "Класс А+ (без запаха)" },
-        { label: "Ширина полотна", value: "До 5.5 м без швов" },
-        { label: "Срок службы", value: "Гарантия 10 лет" }
+        { label: "Материал полотна", value: "MSD Premium / Bauf (Германия)" },
+        { label: "Экологичность", value: "Класс А+ (без запаха и токсинов)" },
+        { label: "Срок монтажа", value: "1 рабочий день" },
+        { label: "Защита от затопления", value: "Выдерживает до 100 л/м²" }
       ],
-      features: ["Монтаж без пыли за 1 день", "Идеальная белизна полотна", "Выдерживает до 100л воды/м²"]
+      features: [
+        "Бесшовное полотно шириной до 5.5 метров",
+        "Не желтеет и не впитывает кухонные запахи",
+        "Быстрый чистый монтаж перфоратором с пылесосом"
+      ]
     },
     {
-      id: "02",
-      title: "Теневой профиль",
-      subtitle: "Архитектурный зазор EuroKRAAB",
-      description: "Современное примыкание EuroKRAAB. Создает визуальный зазор 7 мм, избавляя от резиновых уголков-заглушек.",
-      icon: Sliders,
+      id: "shadow",
+      num: "02",
+      name: "Теневой профиль EuroKRAAB",
+      tag: "Хит 2026 года",
+      price: "от 1 200 ₽/м.п.",
+      title: "Архитектурный теневой зазор",
+      description: "Премиальное бесщелевое примыкание потолка к стене. Ровный теневой зазор 7 мм по всему периметру без устаревших резиновых заглушек и плинтусов.",
+      image: "/new_image_azhur/nezhinskaya/2.webp",
       specs: [
-        { label: "Технология", value: "Бесщелевой теневой зазор" },
-        { label: "Ширина шва", value: "7 мм (идеальная геометрия)" },
-        { label: "Материал", value: "Анодированный алюминий" },
-        { label: "Цвет профиля", value: "Черный муар / Матовый" }
+        { label: "Профиль системы", value: "Оригинальный EuroKRAAB 2.0" },
+        { label: "Ширина зазора", value: "Ровно 7 мм по периметру" },
+        { label: "Цвет профиля", value: "Глубокий черный муар" },
+        { label: "Совместимость", value: "Краска, обои, рейки, керамогранит" }
       ],
-      features: ["Идеально ровный зазор по всему периметру", "Отсутствие маскировочной ленты", "Эффект парящих стен"]
+      features: [
+        "Эффект парящих стен и идеальной геометрии",
+        "Удобно переклеивать обои без демонтажа потолка",
+        "Выбор современных дизайнеров интерьера"
+      ]
     },
     {
-      id: "03",
-      title: "Карнизные решения",
-      subtitle: "Скрытая интеграция и электропривод",
-      description: "Скрытые ниши для штор с интеграцией электрокарниза. Подбираем систему под задачу — от простого карниза до конструкции с местом для подсветки и бесшумными крючками на колёсиках.",
-      icon: Cpu,
+      id: "curtain",
+      num: "03",
+      name: "Скрытые карнизы для штор",
+      tag: "Уют и эстетика",
+      price: "от 1 800 ₽/м.п.",
+      title: "Ниши для штор со скрытой интеграцией",
+      description: "Шторы элегантно ниспадают прямо из плоскости потолка. Возможность установки скрытой теплой LED-подсветки и автоматических электрокарнизов с Алисой.",
+      image: "/new_image_azhur/nezhinskaya/3.webp",
       specs: [
-        { label: "Формируется ниша", value: "да" },
-        { label: "Место для электрокарниза", value: "предусмотрено" },
-        { label: "Минимальный опуск потолка", value: "от 4 см" },
-        { label: "Управление", value: "ручное или электро" }
+        { label: "Конструкция", value: "Встраиваемый профиль Lumfer / ПК14" },
+        { label: "Управление", value: "Ручное или привод (Tuya/Aqara/Алиса)" },
+        { label: "Опуск потолка", value: "Минимальный (от 4 см)" },
+        { label: "Ход бегунков", value: "Бесшумный на колесиках" }
       ],
-      features: ["Скрытый монтаж без видимых крепежей", "Бесшумный плавный ход штор", "Интеграция с натяжным потолком"]
+      features: [
+        "Никаких видимых крючков, труб и креплений",
+        "Возможность мягкой контурной подсветки штор",
+        "Идеальное сопряжение с теневым профилем"
+      ]
     },
     {
-      id: "04",
-      title: "Световые линии и треки",
-      subtitle: "Магнитные системы и контурный свет",
-      description: "Прогрессивное освещение: встроенные магнитные шинопроводы, световые полосы и линейные рассеиватели.",
-      icon: Eye,
+      id: "lines",
+      num: "04",
+      name: "Световые линии и треки",
+      tag: "Современный свет",
+      price: "от 2 200 ₽/м.п.",
+      title: "Встраиваемое линейное и магнитное освещение",
+      description: "Современная замена громоздким люстрам. Магнитные шинопроводы 48V и световые линии формируют основной свет или сценарии зонирования комнаты.",
+      image: "/new_image_azhur/nezhinskaya/4.webp",
       specs: [
+        { label: "Безопасность", value: "Низковольтная система 48V" },
+        { label: "Светодиоды", value: "High CRI > 90 (естественный спектр)" },
         { label: "Ширина линий", value: "15 мм / 30 мм / 50 мм" },
-        { label: "Светодиоды", value: "Samsung Premium LED (CRI >90)" },
-        { label: "Безопасность", value: "Низковольтная шина 48V" },
-        { label: "Управление", value: "Диммирование / Сценарии" }
+        { label: "Управление", value: "Диммирование, настенное или со смартфона" }
       ],
-      features: ["Удобное перемещение светильников", "Основной или декоративный свет", "Стильный футуристичный дизайн"]
+      features: [
+        "Светильники на магнитах легко двигать руками",
+        "Идеальное равномерное рассеивание без мерцания",
+        "Экономия электроэнергии в 5-7 раз по сравнению с лампами"
+      ]
+    },
+    {
+      id: "floating",
+      num: "05",
+      name: "Парящие потолки",
+      tag: "Атмосферный свет",
+      price: "от 1 100 ₽/м.п.",
+      title: "Контурная подсветка периметра комнаты",
+      description: "Потолок визуально отделяется от стен мягким ореолом света. Создает ощущение визуального расширения пространства и расслабляющую вечернюю атмосферу.",
+      image: "/new_image_azhur/nezhinskaya/5.webp",
+      specs: [
+        { label: "Профиль системы", value: "Парящий профиль Flexy Fly Max" },
+        { label: "Тип ленты", value: "LED лента 120-240 диодов/метр" },
+        { label: "Температура света", value: "Теплый (3000K) / Нейтральный (4000K)" },
+        { label: "Рассеиватель", value: "Матовый силиконовый экран" }
+      ],
+      features: [
+        "Зрительно поднимает высоту комнаты на 10-15%",
+        "Идеальный ночник для спальни или коридора",
+        "Скрытый источник света — диоды не слепят глаза"
+      ]
     }
   ];
 
-  return (
-    <section id="services" className="relative bg-brand-black pt-20 pb-24 md:pt-28 md:pb-36 overflow-hidden border-t border-brand-light/5">
-      {/* Background Grid & Ambient Glows */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#111111_1px,transparent_1px),linear-gradient(to_bottom,#111111_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-30" />
-      <div className="absolute top-1/4 left-1/10 w-[400px] h-[400px] rounded-full bg-brand-red/5 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/10 w-[400px] h-[400px] rounded-full bg-brand-red/5 blur-[120px] pointer-events-none" />
+  const current = collections[activeIndex];
 
+  return (
+    <section id="catalog" className="relative bg-brand-snow text-[#111113] py-24 md:py-32 border-t border-black/5 overflow-hidden">
       <div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-16 relative z-10">
         
-        {/* Section Header */}
-        <div className="mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div className="max-w-3xl">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="w-2 h-2 bg-brand-red rounded-full animate-pulse" />
-              <span className="font-mono text-xs text-brand-red uppercase tracking-[0.2em] block">[ НАПРАВЛЕНИЯ ]</span>
+        {/* Section Header styled like Allen Brau */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 md:mb-16">
+          <div>
+            <div className="inline-flex items-center gap-2 mb-3">
+              <span className="w-2 h-2 rounded-full bg-brand-red" />
+              <span className="font-suisse text-xs uppercase tracking-[0.2em] text-brand-red font-medium">
+                Каталог решений 2026
+              </span>
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-medium text-brand-light leading-[1.1] uppercase tracking-tight" id="services-title">
-              Архитектура <br className="hidden sm:inline" />потолков нового уровня
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-suisse font-normal leading-[1.08] tracking-tight text-[#111113]">
+              <span className="font-serif-italic italic">Качественные</span> потолки <br />
+              под любой интерьер и задачу
             </h2>
           </div>
-          <div className="max-w-md">
-            <p className="text-brand-gray text-xs sm:text-sm font-mono uppercase tracking-widest leading-relaxed border-l border-brand-red/40 pl-4 py-1" id="services-subtitle">
-              Премиальные конструктивные решения и световой дизайн с безукоризненным качеством исполнения.
-            </p>
-          </div>
+
+          <p className="text-sm md:text-base text-gray-600 max-w-md font-suisse leading-relaxed border-l-2 border-brand-red/30 pl-4 py-1">
+            Работаем только с сертифицированными полотнами. От классических белых потолков до сложных дизайнерских систем со светом.
+          </p>
         </div>
 
-        {/* Desktop Interactive Layout */}
-        <div className="hidden lg:grid grid-cols-12 gap-12 xl:gap-16 items-start">
-          
-          {/* Left Column: Menu Selector */}
-          <div className="col-span-5 space-y-2">
-            {services.map((service, index) => {
-              const Icon = service.icon;
-              const isActive = activeIndex === index;
-              return (
-                <div
-                  key={service.id}
-                  onClick={() => setActiveIndex(index)}
-                  className={`group relative p-6 cursor-pointer border transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] select-none ${
-                    isActive 
-                      ? 'bg-brand-card border-brand-light/10 shadow-[0_12px_40px_-15px_rgba(0,0,0,0.5)]' 
-                      : 'bg-transparent border-transparent hover:border-brand-light/5 hover:bg-brand-card/20'
-                  }`}
-                >
-                  {/* Active Indicator Bar */}
-                  {isActive && (
-                    <motion.div 
-                      layoutId="activeServiceIndicator"
-                      className="absolute left-0 top-0 bottom-0 w-[3px] bg-brand-red"
-                      transition={{ type: "spring", stiffness: 350, damping: 30 }}
-                    />
-                  )}
-
-                  <div className="flex items-start gap-5">
-                    {/* Index Number */}
-                    <span className={`font-mono text-xs tracking-widest font-bold transition-colors duration-300 ${
-                      isActive ? 'text-brand-red' : 'text-brand-gray/60 group-hover:text-brand-red/70'
-                    }`}>
-                      {service.id}
-                    </span>
-
-                    {/* Content */}
-                    <div className="space-y-2 flex-1">
-                      <div className="flex items-center gap-3">
-                        <Icon size={16} className={`transition-colors duration-300 ${
-                          isActive ? 'text-brand-red' : 'text-brand-gray group-hover:text-brand-light'
-                        }`} />
-                        <h3 className={`font-display text-lg uppercase tracking-tight transition-colors duration-300 ${
-                          isActive ? 'text-white font-medium' : 'text-brand-gray/80 group-hover:text-brand-light'
-                        }`}>
-                          {service.title}
-                        </h3>
-                      </div>
-                      <p className={`text-xs leading-relaxed transition-all duration-500 ${
-                        isActive ? 'text-brand-gray opacity-100' : 'text-brand-gray/40 group-hover:text-brand-gray/60'
-                      }`}>
-                        {service.subtitle}
-                      </p>
-                    </div>
-
-                    <ChevronRight size={16} className={`mt-1 transition-all duration-300 transform ${
-                      isActive ? 'text-brand-red translate-x-1' : 'text-brand-gray/30 group-hover:text-brand-light/50 group-hover:translate-x-0.5'
-                    }`} />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Right Column: Display Panel */}
-          <div className="col-span-7">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeIndex}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                className="bg-brand-card border border-brand-light/10 p-8 xl:p-12 relative overflow-hidden flex flex-col justify-between min-h-[500px] shadow-2xl"
-              >
-                {/* Tech Grid Background Deco */}
-                <div className="absolute top-0 right-0 w-48 h-48 border-b border-l border-brand-light/5 pointer-events-none font-mono text-[8px] text-brand-gray/20 p-2 flex flex-col justify-between">
-                  <div className="flex justify-between">
-                    <span>[ DECO_GRID_01 ]</span>
-                    <span>SEC_0{activeIndex + 1}</span>
-                  </div>
-                  <div className="text-right">A-CLASS STUDIO</div>
-                </div>
-
-                <div>
-                  {/* Header info */}
-                  <div className="space-y-3 mb-8">
-                    <span className="font-mono text-[10px] text-brand-red uppercase tracking-[0.2em] block">
-                      // {services[activeIndex].subtitle}
-                    </span>
-                    <h3 className="text-2xl sm:text-3xl font-display uppercase tracking-tight text-brand-light font-medium">
-                      {services[activeIndex].title}
-                    </h3>
-                    <p className="text-brand-gray text-sm leading-relaxed max-w-xl">
-                      {services[activeIndex].description}
-                    </p>
-                  </div>
-
-                  {/* Technical Specifications Block */}
-                  <div className="grid grid-cols-2 gap-x-8 gap-y-4 pt-6 border-t border-brand-light/5 mb-8">
-                    {services[activeIndex].specs.map((spec, sIdx) => (
-                      <div key={sIdx} className="space-y-1">
-                        <span className="font-mono text-[9px] uppercase tracking-wider text-brand-gray/60 block">
-                          {spec.label}
-                        </span>
-                        <span className="font-mono text-xs sm:text-sm text-brand-light font-medium block">
-                          {spec.value}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* High Quality Features List */}
-                  <div className="space-y-2.5 pt-6 border-t border-brand-light/5">
-                    <span className="font-mono text-[9px] uppercase tracking-wider text-brand-gray/60 block mb-3">
-                      Особенности технологии:
-                    </span>
-                    {services[activeIndex].features.map((feature, fIdx) => (
-                      <div key={fIdx} className="flex items-center gap-3 text-xs text-brand-light">
-                        <ShieldCheck size={14} className="text-brand-red shrink-0" />
-                        <span className="font-mono uppercase tracking-wide text-[10px] text-brand-gray-light">
-                          {feature}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Primary CTA Red Button */}
-                <div className="mt-10 pt-6 border-t border-brand-light/5">
-                  <button
-                    onClick={() => onOpenCalculator(services[activeIndex].title)}
-                    className="group bg-brand-red hover:bg-brand-red/90 text-white font-mono text-xs uppercase tracking-[0.15em] py-4 px-8 transition-all duration-300 font-medium flex items-center justify-center gap-3 cursor-pointer shadow-lg shadow-brand-red/10"
-                  >
-                    Запустить расчет сметы
-                    <ArrowRight size={14} className="group-hover:translate-x-1.5 transition-transform duration-300" />
-                  </button>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
+        {/* Tab Pills (Allen Brau collection buttons style) */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-10 scrollbar-none">
+          {collections.map((col, idx) => (
+            <button
+              key={col.id}
+              onClick={() => setActiveIndex(idx)}
+              className={`px-5 py-3 rounded-full text-xs sm:text-sm font-suisse tracking-wide whitespace-nowrap transition-all duration-300 cursor-pointer flex items-center gap-2 ${
+                activeIndex === idx
+                  ? 'bg-brand-black text-white shadow-lg shadow-black/10'
+                  : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+              }`}
+            >
+              <span className={activeIndex === idx ? 'text-brand-red font-semibold' : 'text-gray-400'}>
+                {col.num}
+              </span>
+              <span>{col.name}</span>
+            </button>
+          ))}
         </div>
 
-        {/* Mobile / Tablet Responsive Showcase */}
-        <div className="lg:hidden space-y-6">
-          {services.map((service, index) => {
-            const Icon = service.icon;
-            return (
-              <motion.div
-                key={service.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-brand-card border border-brand-light/10 p-6 flex flex-col justify-between"
-              >
-                <div>
-                  {/* Mobile header */}
-                  <div className="flex items-start justify-between gap-4 mb-4">
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <Icon size={14} className="text-brand-red" />
-                        <span className="font-mono text-[9px] text-brand-red uppercase tracking-widest">// {service.id}</span>
-                      </div>
-                      <h3 className="font-display text-lg uppercase tracking-tight text-white font-medium">
-                        {service.title}
-                      </h3>
-                    </div>
-                  </div>
+        {/* Active Collection Showcase Card */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={current.id}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="bg-white border border-gray-200/80 rounded-2xl shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-12"
+          >
+            {/* Left: Media Preview */}
+            <div className="lg:col-span-6 relative aspect-[4/3] lg:aspect-auto min-h-[320px] lg:min-h-[520px] bg-gray-100 overflow-hidden">
+              <img
+                src={current.image}
+                alt={current.title}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+              />
+              
+              {/* Badges on image */}
+              <div className="absolute top-5 left-5 z-10 flex flex-wrap gap-2">
+                <span className="px-3 py-1 bg-brand-black/90 text-white backdrop-blur-md rounded-full text-xs font-suisse font-medium">
+                  {current.tag}
+                </span>
+                <span className="px-3 py-1 bg-brand-red text-white rounded-full text-xs font-suisse font-bold">
+                  {current.price}
+                </span>
+              </div>
+            </div>
 
-                  <p className="text-brand-gray text-xs sm:text-sm leading-relaxed mb-6">
-                    {service.description}
-                  </p>
-
-                  {/* Mobile Tech Specs */}
-                  <div className="grid grid-cols-2 gap-4 py-4 border-t border-b border-brand-light/5 mb-6">
-                    {service.specs.map((spec, sIdx) => (
-                      <div key={sIdx} className="space-y-0.5">
-                        <span className="font-mono text-[8px] uppercase tracking-wider text-brand-gray/60 block">
-                          {spec.label}
-                        </span>
-                        <span className="font-mono text-[10px] text-brand-light block leading-snug">
-                          {spec.value}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
+            {/* Right: Technical Details & CTA */}
+            <div className="lg:col-span-6 p-8 sm:p-10 lg:p-12 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between gap-4 mb-2">
+                  <span className="font-suisse text-xs text-brand-red uppercase tracking-wider font-semibold">
+                    {current.name}
+                  </span>
+                  <span className="text-xs font-mono text-gray-400">
+                    КОД РЕШЕНИЯ // {current.num}
+                  </span>
                 </div>
 
+                <h3 className="text-2xl sm:text-3xl font-suisse font-normal text-[#111113] tracking-tight mb-4">
+                  {current.title}
+                </h3>
+
+                <p className="text-sm sm:text-base text-gray-600 font-suisse leading-relaxed mb-8">
+                  {current.description}
+                </p>
+
+                {/* Tech Specs Table */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-5 border-y border-gray-100 mb-6">
+                  {current.specs.map((spec, sIdx) => (
+                    <div key={sIdx} className="space-y-0.5">
+                      <div className="text-[11px] font-suisse uppercase tracking-wider text-gray-400">
+                        {spec.label}
+                      </div>
+                      <div className="text-xs sm:text-sm font-suisse font-medium text-gray-900">
+                        {spec.value}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Bullet Features */}
+                <div className="space-y-2.5 mb-8">
+                  {current.features.map((feat, fIdx) => (
+                    <div key={fIdx} className="flex items-center gap-2.5 text-xs sm:text-sm text-gray-700 font-suisse">
+                      <div className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                        <Check size={11} strokeWidth={2.5} />
+                      </div>
+                      <span>{feat}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="pt-4 flex flex-col sm:flex-row items-center gap-4">
                 <button
-                  onClick={() => onOpenCalculator(service.title)}
-                  className="w-full bg-brand-red hover:bg-brand-red/95 text-white font-mono text-[10px] uppercase tracking-widest py-3.5 px-4 transition-all duration-300 font-medium flex items-center justify-center gap-2"
+                  onClick={() => onOpenCalculator(current.name)}
+                  className="w-full sm:w-auto bg-brand-red hover:bg-brand-red-hover text-white font-suisse text-sm font-medium tracking-wide px-8 py-4 rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-brand-red/20"
                 >
-                  Узнать стоимость
-                  <ArrowRight size={12} />
+                  <span>Рассчитать стоимость помещения</span>
+                  <ArrowRight size={16} />
                 </button>
-              </motion.div>
-            );
-          })}
-        </div>
+                
+                <div className="text-xs text-gray-500 font-suisse text-center sm:text-left">
+                  Цена под ключ: <strong>{current.price}</strong>
+                </div>
+              </div>
+
+            </div>
+          </motion.div>
+        </AnimatePresence>
 
       </div>
     </section>
   );
 }
-

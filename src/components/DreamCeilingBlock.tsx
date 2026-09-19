@@ -13,87 +13,76 @@ export function DreamCeilingBlock({ onOpenCalculator }: DreamCeilingBlockProps) 
   const steps = [
     {
       num: "01",
-      title: "Погружение в проект",
-      desc: "чтобы не переделывать",
-      details: "Слушаем вас, смотрим пространство, задаём вопросы. Понимаем задачу прежде чем предлагать решения."
+      title: "Заявка и предварительный расчет",
+      desc: "за 5 минут",
+      details: "Вы оставляете заявку или звоните нам. Уточняем площадь, пожелания по фактуре (матовый, сатин, теневой, треки) и озвучиваем понятный диапазон стоимости."
     },
     {
       num: "02",
-      title: "Подбор решения под задачу и бюджет",
-      desc: "без потери качества",
-      details: "Не навязываем дорогое. Подбираем то что реально подходит вашему интерьеру и кошельку."
+      title: "Бесплатный выезд инженера с образцами",
+      desc: "в удобный день",
+      details: "Технолог приедет с чемоданом образцов профилей и полотен. Проведет лазерный замер, оценит стены и поможет выбрать оптимальный вариант под ваш бюджет."
     },
     {
       num: "03",
-      title: "Точная смета",
+      title: "Точная смета и договор",
       desc: "цена не меняется",
-      details: "Фиксируем стоимость до начала работ. Цена не меняется в процессе."
+      details: "Фиксируем финальную стоимость и перечень работ в официальном договоре с гарантией 10 лет. Никаких доплат и скрытых платежей в процессе монтажа."
     },
     {
       num: "04",
-      title: "Подготовка и координация",
-      desc: "вы не тратите нервы",
-      details: "Согласуем дату, подготавливаем материалы, приезжаем вовремя."
+      title: "Чистый монтаж без пыли",
+      desc: "за 1 рабочий день",
+      details: "Монтажники приезжают точно вовремя со взрывобезопасными композитными баллонами и перфораторами с пылесосами. Вся комната делается за 3-5 часов без грязи."
     },
     {
       num: "05",
-      title: "Монтаж от мастеров",
-      desc: "за один день",
-      details: "Работаем аккуратно, без пыли и грязи. Один день — и потолок готов."
-    },
-    {
-      num: "06",
-      title: "Сдача объекта с гарантией",
-      desc: "10 лет",
-      details: "Принимаем работу вместе с вами. Устраняем замечания на месте. Выдаём гарантийный документ."
+      title: "Приёмка работы и оплата по факту",
+      desc: "вы платите за результат",
+      details: "Вы лично проверяете идеальную натяжку полотна, работу освещения и ровность углов. Оплата производится только после того, как вы полностью довольны результатом."
     }
   ];
 
   return (
-    <section id="process" className="relative bg-brand-black py-24 md:py-36 overflow-hidden border-t border-brand-light/5">
-      {/* Subtle minimalist background visual elements */}
-      <div className="absolute top-0 right-1/4 w-[1px] h-48 bg-gradient-to-b from-brand-red/20 to-transparent" />
-      <div className="absolute bottom-0 left-1/3 w-[300px] h-[300px] rounded-full bg-brand-red/5 blur-[120px] pointer-events-none" />
-
+    <section id="process" className="relative bg-brand-black py-24 md:py-32 overflow-hidden border-t border-white/5 text-white">
       <div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           
-          {/* Left Column: Headline */}
+          {/* Left Column: Headline & Video */}
           <div className="lg:col-span-5 flex flex-col justify-between">
             <div className="space-y-6">
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-xs text-brand-red uppercase tracking-widest">[ КАК РОЖДАЕТСЯ ПОТОЛОК ВАШЕЙ МЕЧТЫ ]</span>
+              <div className="inline-flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-brand-red" />
+                <span className="font-suisse text-xs text-brand-red uppercase tracking-[0.2em] font-medium">
+                  Прозрачный процесс
+                </span>
               </div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[44px] xl:text-[52px] font-display font-bold leading-[1.1] text-brand-light uppercase tracking-tight text-balance">
-                Берём на себя всё — от идеи до финальной сдачи
+              
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-suisse font-normal leading-[1.08] tracking-tight text-white">
+                От первого звонка <br />
+                до <span className="font-serif-italic italic text-brand-red">идеального потолка</span>
               </h2>
+
+              <p className="text-sm md:text-base text-brand-gray font-suisse leading-relaxed">
+                Мы избавили процесс ремонта от стресса: прозрачные этапы, точные сроки и оплата только после вашей приемки.
+              </p>
             </div>
             
-            {/* Video container with 4:3 aspect ratio */}
-            <div className="my-8 lg:my-10 aspect-[4/3] w-full max-w-[460px] rounded-none overflow-hidden bg-brand-card/50 border border-brand-light/5 relative group/img">
-              <div className="absolute inset-0 bg-brand-black/20 md:group-hover/img:bg-brand-black/10 transition-colors duration-500 z-10 pointer-events-none" />
+            {/* Video container */}
+            <div className="my-8 aspect-[4/3] w-full max-w-[440px] rounded-xl overflow-hidden bg-brand-card border border-white/10 relative shadow-xl">
               <LazyVideo
                 src="/azhur/photo/pro.mp4"
                 muted
                 loop
                 playsInline
-                className="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] md:group-hover/img:scale-105 group-hover/img:scale-100"
+                className="w-full h-full object-cover"
               />
-            </div>
-            
-            {/* Desktop spacer or decoration to balance negative space */}
-            <div className="hidden lg:block mt-auto">
-              <div className="h-[1px] w-24 bg-brand-red" />
-              <p className="mt-4 font-mono text-[10px] text-brand-gray uppercase tracking-widest leading-relaxed">
-                Индивидуальное проектирование <br />
-                и безупречная реализация
-              </p>
             </div>
           </div>
 
           {/* Right Column: Stages List */}
           <div className="lg:col-span-7 flex flex-col justify-between">
-            <div className="divide-y divide-brand-light/10 border-b border-brand-light/10">
+            <div className="divide-y divide-white/10 border-y border-white/10">
               {steps.map((step, index) => {
                 const isOpen = activeStep === step.num;
                 return (
@@ -107,36 +96,32 @@ export function DreamCeilingBlock({ onOpenCalculator }: DreamCeilingBlockProps) 
                   >
                     <button
                       onClick={() => setActiveStep(isOpen ? null : step.num)}
-                      className="w-full text-left py-6 md:py-8 flex items-start gap-6 hover:border-brand-red/30 transition-colors duration-300 focus:outline-none cursor-pointer"
+                      className="w-full text-left py-6 md:py-7 flex items-start gap-4 sm:gap-6 cursor-pointer"
                     >
                       {/* Number Accent */}
-                      <span className={`font-display text-xl md:text-2xl font-medium leading-none select-none transition-all duration-300 ${
-                        isOpen ? 'text-brand-red scale-110' : 'text-brand-gray group-hover:text-brand-red group-hover:scale-105'
+                      <span className={`font-serif-italic text-2xl sm:text-3xl italic transition-colors duration-300 w-10 shrink-0 ${
+                        isOpen ? 'text-brand-red font-bold' : 'text-brand-gray group-hover:text-white'
                       }`}>
                         {step.num}
                       </span>
                       
                       {/* Content Container */}
-                      <div className="flex-grow flex flex-col md:flex-row md:items-baseline md:justify-between gap-2 md:gap-4 pr-4">
-                        <h3 className={`text-base sm:text-lg md:text-xl font-display uppercase tracking-tight transition-colors duration-300 ${
-                          isOpen ? 'text-white' : 'text-brand-light group-hover:text-white'
+                      <div className="flex-grow flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 sm:gap-4 pr-4">
+                        <h3 className={`text-base sm:text-lg font-suisse font-medium transition-colors ${
+                          isOpen ? 'text-white' : 'text-white/85 group-hover:text-white'
                         }`}>
                           {step.title}
                         </h3>
-                        <span className={`font-mono text-xs md:text-sm uppercase tracking-wider shrink-0 transition-colors duration-300 ${
-                          isOpen ? 'text-brand-red' : 'text-brand-gray group-hover:text-brand-light'
+                        <span className={`font-suisse text-xs uppercase tracking-wider shrink-0 ${
+                          isOpen ? 'text-brand-red font-semibold' : 'text-brand-gray'
                         }`}>
                           — {step.desc}
                         </span>
                       </div>
 
                       {/* Accordion Indicator Icon */}
-                      <div className="shrink-0 mt-0.5 text-brand-gray group-hover:text-brand-red transition-colors duration-300">
-                        {isOpen ? (
-                          <Minus size={16} className="text-brand-red" />
-                        ) : (
-                          <Plus size={16} />
-                        )}
+                      <div className="shrink-0 mt-0.5 text-brand-gray group-hover:text-brand-red transition-colors">
+                        {isOpen ? <Minus size={16} className="text-brand-red" /> : <Plus size={16} />}
                       </div>
                     </button>
 
@@ -150,8 +135,8 @@ export function DreamCeilingBlock({ onOpenCalculator }: DreamCeilingBlockProps) 
                           transition={{ duration: 0.3, ease: 'easeInOut' }}
                           className="overflow-hidden"
                         >
-                          <div className="pb-6 md:pb-8 pl-12 md:pl-14 max-w-2xl">
-                            <p className="text-sm md:text-base text-brand-gray leading-relaxed font-sans">
+                          <div className="pb-6 pl-14 sm:pl-16 max-w-2xl">
+                            <p className="text-sm md:text-base text-brand-gray font-suisse leading-relaxed">
                               {step.details}
                             </p>
                           </div>
@@ -163,22 +148,16 @@ export function DreamCeilingBlock({ onOpenCalculator }: DreamCeilingBlockProps) 
               })}
             </div>
 
-            {/* Red outline Action Button */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="mt-12 flex justify-start"
-            >
+            {/* Action CTA */}
+            <div className="mt-8 flex justify-start">
               <button
                 onClick={() => onOpenCalculator('Обсуждение проекта')}
-                className="group relative inline-flex items-center justify-center gap-3 border border-brand-red hover:bg-brand-red hover:shadow-lg hover:shadow-brand-red/10 text-brand-light hover:text-white font-mono text-xs uppercase tracking-widest px-8 py-5 transition-all duration-300 font-medium cursor-pointer"
+                className="bg-brand-red hover:bg-brand-red-hover text-white font-suisse text-xs uppercase tracking-wider px-8 py-4 rounded-lg transition-all font-semibold flex items-center gap-2 cursor-pointer shadow-lg shadow-brand-red/20"
               >
-                <span>Обсудить проект</span>
-                <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                <span>Обсудить мой проект</span>
+                <ArrowUpRight size={16} />
               </button>
-            </motion.div>
+            </div>
           </div>
 
         </div>
@@ -186,4 +165,3 @@ export function DreamCeilingBlock({ onOpenCalculator }: DreamCeilingBlockProps) 
     </section>
   );
 }
-

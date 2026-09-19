@@ -101,14 +101,22 @@ export function ReviewsBlock() {
       <div className="absolute top-1/2 right-10 w-[200px] h-[200px] rounded-full bg-brand-red/5 blur-[80px] pointer-events-none" />
 
       <div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-16">
-        {/* Section Header */}
-        <div className="mb-16">
-          <div className="flex items-center gap-2 mb-4">
-            <span className="font-mono text-xs text-brand-red uppercase tracking-widest">[ ОТЗЫВЫ О НАШЕЙ РАБОТЕ ]</span>
+        {/* Section Header styled like Allen Brau */}
+        <div className="mb-14 md:mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <div className="inline-flex items-center gap-2 mb-3">
+              <span className="w-2 h-2 rounded-full bg-brand-red" />
+              <span className="font-suisse text-xs text-brand-red uppercase tracking-[0.2em] font-medium">
+                Репутация и доверие
+              </span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-suisse font-normal text-white leading-tight">
+              <span className="font-serif-italic italic text-brand-red">Что говорят</span> заказчики
+            </h2>
           </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-medium text-brand-light leading-none uppercase tracking-tight">
-            Что говорят клиенты
-          </h2>
+          <p className="text-sm md:text-base text-brand-gray font-suisse max-w-md leading-relaxed border-l border-white/10 pl-4 py-1">
+            Честные отзывы людей, которым мы установили натяжные потолки в квартирах и домах.
+          </p>
         </div>
 
         {/* Desktop: 3 Columns Grid of reviews */}

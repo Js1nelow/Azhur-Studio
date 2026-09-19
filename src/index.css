@@ -1,28 +1,46 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Geist+Mono:wght@300;400;500&family=Unbounded:wght@300;400;500;700;900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Geist+Mono:wght@300;400;500&family=Unbounded:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 @import "tailwindcss";
 
-@theme {
-  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, monospace;
-  --font-display: "Unbounded", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Playfair Display", Georgia, serif;
+@font-face {
+  font-family: 'Suisse Intl';
+  src: url('/fonts/suisseintl-regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
-  --color-brand-black: #0A0A0B;
-  --color-brand-dark: #121212;
-  --color-brand-card: #161617;
-  --color-brand-gray: #8F8F93;
-  --color-brand-light: #E5E5E5;
-  --color-brand-red: #8B0000;
-  --color-brand-red-hover: #5A0000;
+@font-face {
+  font-family: 'SangBleu Kingdom';
+  src: url('/fonts/sangbleukingdom-regularitalic.woff2') format('woff2'),
+       url('/fonts/sangbleukingdom-regularitalic.woff') format('woff'),
+       url('/fonts/sangbleukingdom-regularitalic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: "Suisse Intl", "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-suisse: "Suisse Intl", "Manrope", sans-serif;
+  --font-serif-italic: "SangBleu Kingdom", "Playfair Display", Georgia, serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+  --font-display: "Unbounded", "Suisse Intl", sans-serif;
+
+  --color-brand-black: #0B0C0E;
+  --color-brand-dark: #121316;
+  --color-brand-card: #17181C;
+  --color-brand-gray: #8F9199;
+  --color-brand-light: #F4F4F6;
+  --color-brand-red: #C51B24;
+  --color-brand-red-hover: #9E121A;
+  
+  --color-brand-white: #FFFFFF;
+  --color-brand-snow: #F8F8FA;
+  --color-brand-card-light: #FFFFFF;
+  --color-brand-muted: #6B7280;
 }
 
 @layer base {
-  :root.light {
-    --color-brand-black: #F5F5F7;
-    --color-brand-card: #FFFFFF;
-    --color-brand-gray: #6E6E73;
-    --color-brand-light: #111111;
-  }
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 80px;
@@ -34,12 +52,33 @@
     selection-color: white;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display uppercase tracking-tighter;
     overflow-wrap: break-word;
   }
 }
 
 @layer utilities {
+  .font-italic-serif {
+    font-family: var(--font-serif-italic);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .font-suisse {
+    font-family: var(--font-suisse);
+  }
+  
+  .title-hero {
+    font-family: var(--font-suisse);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.02;
+  }
+  .title-hero-italic {
+    font-family: var(--font-serif-italic);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
   .hairline-border {
     @apply border border-brand-light/10;
   }
@@ -66,7 +105,23 @@
   }
 }
 
-/* Скрываем значок reCAPTCHA, как разрешено правилами Google (если добавить текст в форму) */
+/* Ticker marquee animation */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 35s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* reCAPTCHA badge */
 .grecaptcha-badge {
   visibility: hidden !important;
 }
